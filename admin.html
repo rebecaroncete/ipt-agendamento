@@ -236,6 +236,18 @@ textarea.inp{min-height:92px;resize:vertical;line-height:1.45;font-size:15px}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
 @keyframes fade{from{opacity:0}}
+/* tablet deitado e computador: aulas à esquerda, cuidados à direita */
+@media (min-width:1000px){
+  .wrap{max-width:1180px}
+  .top .wrap{max-width:1180px}
+  #t-hoje{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);column-gap:24px;align-items:start}
+  #t-hoje > .page-title, #h-kpis, #h-alertas{grid-column:1 / -1}
+  #h-alertas{grid-template-columns:repeat(5,1fr)}
+  #s-aulas{grid-column:1}
+  #h-lado{grid-column:2}
+  #t-alunos,#t-ajustes{max-width:760px;margin:0 auto}
+  .nav-in{max-width:620px}
+}
 @media (max-width:420px){ .live .lt{display:none} .pres button{padding:8px 8px} }
 @media (max-width:380px){
   .brand-txt{display:none}
@@ -281,15 +293,17 @@ textarea.inp{min-height:92px;resize:vertical;line-height:1.45;font-size:15px}
       </div>
       <div class="kpis" id="h-kpis"></div>
       <div class="alert-grid" id="h-alertas"></div>
-      <div class="sec">
+      <div class="sec" id="s-aulas">
         <div class="sec-h"><h3 class="h-display">Aulas do dia</h3><small>Toque para ver a lista</small></div>
         <div id="h-aulas"><div class="loading"><div class="spin"></div>Carregando…</div></div>
       </div>
-      <div class="sec" id="s-pendentes"></div>
-      <div class="sec" id="s-aniv"></div>
-      <div class="sec" id="s-sumidos"></div>
-      <div class="sec" id="s-parceiros"></div>
-      <div class="sec" id="s-avisos"></div>
+      <div id="h-lado">
+        <div class="sec" id="s-pendentes"></div>
+        <div class="sec" id="s-aniv"></div>
+        <div class="sec" id="s-sumidos"></div>
+        <div class="sec" id="s-parceiros"></div>
+        <div class="sec" id="s-avisos"></div>
+      </div>
     </section>
 
     <!-- ALUNOS -->
