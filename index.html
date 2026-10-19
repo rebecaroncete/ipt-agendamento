@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0B">
+<title>IPT · Agende sua aula</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0B0B; --bg2:#141414; --card:#1A1A1A; --card2:#222; --line:#2C2C2C;
+  --txt:#F4F4F4; --muted:#9A9A9A; --neon:#C6FF00; --neon-ink:#0B0B0B;
+  --pink:#FF6FB5; --cyan:#00E0FF; --warn:#FFC93C; --red:#FF5A5A;
+  --r:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--txt);font-family:Inter,system-ui,sans-serif;font-size:15px}
+body{min-height:100vh;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+button{font-family:inherit;cursor:pointer}
+input,select{font-family:inherit}
+.hidden{display:none!important}
+.wrap{max-width:520px;margin:0 auto;padding:0 16px}
+
+/* ---------- marca ---------- */
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark{width:40px;height:40px;border:3px solid var(--neon);border-radius:10px;display:grid;place-items:center;
+  font-family:Anton,sans-serif;color:var(--neon);font-size:18px;letter-spacing:.5px;transform:skewX(-8deg)}
+.brand-txt{font-weight:800;font-style:italic;color:var(--neon);line-height:1.05;font-size:12px;letter-spacing:.3px;text-transform:uppercase}
+.h-display{font-family:Anton,sans-serif;text-transform:uppercase;letter-spacing:.5px;line-height:1;margin:0}
+
+/* ---------- topo ---------- */
+.top{position:sticky;top:0;z-index:20;background:linear-gradient(var(--bg) 75%,transparent);padding:14px 0 10px}
+.top-row{display:flex;justify-content:space-between;align-items:center}
+.icon-btn{background:var(--card);border:1px solid var(--line);color:var(--txt);width:40px;height:40px;border-radius:12px;font-size:18px}
+.hello{margin:14px 0 2px;font-size:26px}
+.hello span{color:var(--neon)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.chip{font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px;background:var(--card);border:1px solid var(--line);color:var(--muted)}
+.chip.neon{background:var(--neon);color:var(--neon-ink);border-color:var(--neon)}
+
+/* ---------- boas-vindas / forms ---------- */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;padding:28px 16px 32px}
+.hero h1{font-size:54px;margin:28px 0 10px}
+.hero h1 em{font-style:normal;color:var(--neon)}
+.hero p{color:var(--muted);font-size:16px;line-height:1.5;margin:0}
+.feat{display:grid;gap:10px;margin:26px 0}
+.feat div{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);padding:12px 14px;border-radius:14px;font-weight:600}
+.feat b{color:var(--neon);font-size:18px;width:22px;text-align:center}
+.btn{width:100%;border:0;border-radius:14px;padding:16px;font-weight:800;font-size:16px;text-transform:uppercase;letter-spacing:.4px}
+.btn-neon{background:var(--neon);color:var(--neon-ink)}
+.btn-neon:active{transform:scale(.98)}
+.btn-ghost{background:transparent;color:var(--txt);border:1.5px solid var(--line)}
+.btn-dark{background:var(--card2);color:var(--txt)}
+.btn:disabled{opacity:.45}
+.stack{display:grid;gap:10px}
+.demo-box{margin-top:18px;border:1px dashed #3a3a3a;border-radius:14px;padding:12px}
+.demo-box small{color:var(--muted);display:block;margin-bottom:8px;font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:.6px}
+.demo-box button{background:none;border:0;color:var(--neon);font-weight:700;padding:6px 0;text-align:left;font-size:14px;display:block}
+
+.form-page{padding:18px 16px 40px}
+.back{background:none;border:0;color:var(--muted);font-weight:700;padding:6px 0;font-size:14px}
+.form-page h2{font-size:34px;margin:12px 0 6px}
+.form-page .sub{color:var(--muted);margin:0 0 22px;line-height:1.5}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:7px}
+.field input{width:100%;background:var(--card);border:1.5px solid var(--line);color:var(--txt);border-radius:12px;padding:14px;font-size:16px;outline:none}
+.field input:focus{border-color:var(--neon)}
+input[type=date]{color-scheme:dark}
+.seg{display:grid;gap:8px}
+.seg.c2{grid-template-columns:1fr 1fr}.seg.c3{grid-template-columns:1fr 1fr 1fr}
+.seg button{background:var(--card);border:1.5px solid var(--line);color:var(--txt);border-radius:12px;padding:13px 6px;font-weight:700;font-size:14px}
+.seg button.on{border-color:var(--neon);background:rgba(198,255,0,.1);color:var(--neon)}
+.check{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:6px 0 20px;font-size:13.5px;line-height:1.45;color:#cfcfcf}
+.check input{width:22px;height:22px;accent-color:var(--neon);flex:0 0 auto;margin:0}
+.link{background:none;border:0;color:var(--neon);font-weight:700;padding:0;font-size:inherit;text-decoration:underline}
+.err{color:var(--red);font-weight:600;font-size:14px;min-height:20px;margin:-6px 0 12px}
+
+.center-page{min-height:100vh;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:30px 16px}
+.big-ico{width:92px;height:92px;border-radius:50%;margin:0 auto 22px;display:grid;place-items:center;font-size:42px;background:rgba(198,255,0,.12);border:2px solid var(--neon)}
+.center-page h2{font-size:34px;margin:0 0 10px}
+.center-page p{color:var(--muted);line-height:1.55;margin:0 0 26px}
+
+/* ---------- dias ---------- */
+.days{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none;margin:0 -16px;padding-left:16px;padding-right:16px}
+.days::-webkit-scrollbar{display:none}
+.day{flex:0 0 auto;width:58px;border-radius:14px;background:var(--card);border:1.5px solid var(--line);color:var(--txt);padding:9px 0;text-align:center}
+.day .dw{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.5px}
+.day .dn{font-family:Anton,sans-serif;font-size:22px;margin-top:2px}
+.day .dot{width:6px;height:6px;border-radius:50%;background:var(--neon);margin:4px auto 0;visibility:hidden}
+.day.mine .dot{visibility:visible}
+.day.on{background:var(--neon);border-color:var(--neon);color:var(--neon-ink)}
+.day.on .dw{color:var(--neon-ink)}
+.day.on .dot{background:var(--neon-ink)}
+
+.section-title{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 12px}
+.section-title h3{font-size:22px}
+.section-title small{color:var(--muted);font-weight:600}
+
+/* ---------- cards de aula ---------- */
+.list{display:grid;gap:10px}
+.aula{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:14px;display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:12px;align-items:center;position:relative;overflow:hidden}
+.aula::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,var(--neon))}
+.aula .hr{font-family:Anton,sans-serif;font-size:22px;line-height:1}
+.aula .hr small{display:block;font-family:Inter;font-size:11px;color:var(--muted);font-weight:600;margin-top:4px}
+.aula .mod{font-weight:800;font-size:15px;margin-bottom:6px}
+.vagas{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-size:12.5px;font-weight:700;color:var(--muted)}
+.dots{display:flex;gap:3px}
+.dots i{width:8px;height:8px;border-radius:50%;background:#333;display:block}
+.dots i.f{background:var(--c,var(--neon))}
+.vagas.last{color:var(--warn)}
+.motivo{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.35}
+.act{border:0;border-radius:12px;padding:11px 14px;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
+.act.go{background:var(--neon);color:var(--neon-ink)}
+.act.full{background:#000;color:#fff;border:1.5px solid #444}
+.act.mine{background:rgba(198,255,0,.12);color:var(--neon);border:1.5px solid var(--neon)}
+.act.off{background:var(--card2);color:#777}
+.aula.is-mine{border-color:var(--neon)}
+.aula.is-past{opacity:.45}
+.aula.is-full .mod{color:#bbb}
+.empty{color:var(--muted);text-align:center;padding:34px 10px;background:var(--card);border-radius:var(--r);border:1px dashed var(--line);line-height:1.5}
+
+.banner{border-radius:var(--r);padding:16px;margin:4px 0 16px;display:flex;gap:14px;align-items:center}
+.banner.bday{background:linear-gradient(120deg,#C6FF00,#7CFFB2);color:#0B0B0B}
+.banner.checkin{background:rgba(0,224,255,.08);border:1.5px solid rgba(0,224,255,.45)}
+.banner .e{font-size:30px}
+.banner b{display:block;font-size:15px;margin-bottom:2px}
+.banner span{font-size:13px;line-height:1.4}
+
+/* ---------- minhas reservas ---------- */
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:18px}
+.stat-row{display:flex;justify-content:space-between;align-items:flex-end}
+.stat .num{font-family:Anton,sans-serif;font-size:40px;line-height:1;color:var(--neon)}
+.stat .lbl{color:var(--muted);font-size:13px;font-weight:600}
+.bar{height:8px;background:#2a2a2a;border-radius:99px;margin-top:12px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--neon);border-radius:99px}
+.res{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:10px}
+.res-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.res .when{font-size:12px;font-weight:800;color:var(--neon);text-transform:uppercase;letter-spacing:.5px}
+.res .mod{font-weight:800;font-size:16px;margin:4px 0 2px}
+.res .hrs{color:var(--muted);font-size:13px;font-weight:600}
+.res-actions{display:flex;gap:8px;margin-top:12px}
+.res-actions button{flex:1;border-radius:11px;padding:10px;font-weight:700;font-size:13px;border:1.5px solid var(--line);background:transparent;color:var(--txt)}
+.res-actions .danger{color:var(--red);border-color:rgba(255,90,90,.35)}
+.res .alert{margin-top:10px;font-size:12.5px;color:var(--cyan);font-weight:600}
+.hist{display:flex;justify-content:space-between;padding:12px 2px;border-bottom:1px solid var(--line);font-size:14px}
+.hist span{color:var(--muted)}
+.pill{font-size:11px;font-weight:800;padding:4px 9px;border-radius:99px;text-transform:uppercase}
+.pill.presente{background:rgba(198,255,0,.14);color:var(--neon)}
+.pill.falta{background:rgba(255,90,90,.14);color:var(--red)}
+
+/* ---------- navegação ---------- */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(11,11,11,.92);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:8px 16px calc(8px + env(safe-area-inset-bottom))}
+.nav-in{max-width:520px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.nav button{background:none;border:0;color:var(--muted);padding:8px;border-radius:12px;font-weight:700;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.nav button .i{font-size:20px}
+.nav button.on{color:var(--neon);background:rgba(198,255,0,.08)}
+.badge{background:var(--neon);color:#000;border-radius:99px;font-size:10px;padding:1px 6px;margin-left:4px}
+
+/* ---------- sheet / toast ---------- */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:50;display:flex;align-items:flex-end;justify-content:center;animation:fade .15s}
+.sheet{background:var(--bg2);border:1px solid var(--line);border-bottom:0;width:100%;max-width:520px;border-radius:24px 24px 0 0;padding:10px 20px calc(24px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto;animation:up .22s ease-out}
+.grab{width:44px;height:5px;background:#3a3a3a;border-radius:99px;margin:0 auto 16px}
+.sheet h3{font-size:28px;margin:0 0 6px}
+.sheet p{color:var(--muted);line-height:1.5;margin:0 0 16px}
+.sum{background:var(--card);border-radius:14px;padding:14px;margin:0 0 16px;display:grid;gap:8px}
+.sum div{display:flex;justify-content:space-between;gap:12px;font-size:14px}
+.sum span{color:var(--muted)}
+.sum b{text-align:right}
+.note{font-size:13px;line-height:1.45;border-radius:12px;padding:12px;margin-bottom:16px}
+.note.info{background:rgba(198,255,0,.08);color:#dfffa0}
+.note.warn{background:rgba(255,201,60,.1);color:var(--warn)}
+.note.cyan{background:rgba(0,224,255,.08);color:#9ff3ff;border:1px solid rgba(0,224,255,.3)}
+.ok-ico{width:76px;height:76px;border-radius:50%;background:var(--neon);color:#000;display:grid;place-items:center;font-size:38px;margin:4px auto 14px;font-weight:900}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#fff;color:#000;font-weight:700;padding:12px 18px;border-radius:12px;z-index:60;max-width:calc(100% - 32px);font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.5);animation:up .2s}
+.loading{color:var(--muted);text-align:center;padding:30px}
+.spin{width:22px;height:22px;border:3px solid #333;border-top-color:var(--neon);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+@keyframes fade{from{opacity:0}}
+.vagas .t{white-space:nowrap}
+.sair{background:var(--card);border:1px solid var(--line);color:var(--muted);height:36px;padding:0 14px;border-radius:12px;font-weight:700;font-size:13px}
+@media (max-width:370px){
+  .aula{grid-template-columns:50px minmax(0,1fr) auto;gap:10px;padding:12px}
+  .aula .hr{font-size:19px}
+  .act{padding:9px 10px;font-size:11.5px}
+  .hero h1{font-size:44px}
+}
+.foot{color:#555;text-align:center;font-size:11px;margin:30px 0 10px}
+</style>
+</head>
+<body>
+
+<!-- ============ BOAS-VINDAS ============ -->
+<section id="v-welcome" class="wrap hero hidden">
+  <div>
+    <div class="brand"><div class="brand-mark">IPT</div><div class="brand-txt">Instituto<br>Performance<br>Total</div></div>
+    <h1 class="h-display">Garanta sua <em>vaga</em> no treino</h1>
+    <p>Veja as vagas de cada aula e reserve seu horário em segundos, sem precisar mandar mensagem.</p>
+    <div class="feat">
+      <div><b>◉</b> Vagas em tempo real</div>
+      <div><b>✓</b> Reserva com um toque</div>
+      <div><b>⏰</b> Lembrete na sua agenda</div>
+    </div>
+  </div>
+  <div class="stack">
+    <button class="btn btn-neon" onclick="go('v-cadastro')">Criar meu cadastro</button>
+    <button class="btn btn-ghost" onclick="go('v-entrar')">Já tenho cadastro</button>
+    <div class="demo-box">
+      <small>Modo demonstração</small>
+      <button onclick="demoLogin('27900000002','1988-10-19')">→ Entrar como Juliana (Wellhub · aniversariante)</button>
+      <button onclick="demoLogin('27900000017','1991-04-25')">→ Entrar como Lucas (Mensalista)</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CADASTRO ============ -->
+<section id="v-cadastro" class="wrap form-page hidden">
+  <button class="back" onclick="go('v-welcome')">← Voltar</button>
+  <h2 class="h-display">Seu cadastro</h2>
+  <p class="sub">Leva menos de 1 minuto. Depois, o Instituto aprova seu acesso.</p>
+  <form id="f-cad" novalidate>
+    <div class="field"><label>Nome completo</label><input id="c-nome" autocomplete="name" placeholder="Ex.: Ana Paula Ribeiro"></div>
+    <div class="field"><label>WhatsApp</label><input id="c-whats" inputmode="numeric" autocomplete="tel" placeholder="(27) 99999-9999"></div>
+    <div class="field"><label>Data de nascimento</label><input id="c-nasc" type="date"></div>
+    <div class="field"><label>Gênero</label>
+      <div class="seg c2" data-name="genero">
+        <button type="button" data-v="F">Feminino</button><button type="button" data-v="M">Masculino</button>
+      </div>
+    </div>
+    <div class="field"><label>Seu plano</label>
+      <div class="seg c3" data-name="plano">
+        <button type="button" data-v="mensalista">Mensalista</button><button type="button" data-v="wellhub">Wellhub</button><button type="button" data-v="totalpass">TotalPass</button>
+      </div>
+    </div>
+    <label class="check"><input type="checkbox" id="c-lgpd">
+      <span>Concordo com o uso dos meus dados pelo Instituto Performance Total para agendamento de aulas e contato. <button type="button" class="link" onclick="openPrivacy()">Ler política de privacidade</button></span>
+    </label>
+    <div class="err" id="c-err"></div>
+    <button class="btn btn-neon" id="c-btn">Enviar cadastro</button>
+  </form>
+</section>
+
+<!-- ============ ENTRAR ============ -->
+<section id="v-entrar" class="wrap form-page hidden">
+  <button class="back" onclick="go('v-welcome')">← Voltar</button>
+  <h2 class="h-display">Bem-vindo de volta</h2>
+  <p class="sub">Use o WhatsApp e a data de nascimento do seu cadastro.</p>
+  <form id="f-ent" novalidate>
+    <div class="field"><label>WhatsApp</label><input id="e-whats" inputmode="numeric" placeholder="(27) 99999-9999"></div>
+    <div class="field"><label>Data de nascimento</label><input id="e-nasc" type="date"></div>
+    <div class="err" id="e-err"></div>
+    <button class="btn btn-neon" id="e-btn">Entrar</button>
+  </form>
+</section>
+
+<!-- ============ PENDENTE ============ -->
+<section id="v-pendente" class="wrap center-page hidden">
+  <div class="big-ico">⏳</div>
+  <h2 class="h-display">Cadastro enviado!</h2>
+  <p>Oi, <b id="p-nome"></b>! Agora é só aguardar a aprovação do Instituto. Assim que liberarem, você já pode reservar suas aulas por aqui.</p>
+  <div class="stack">
+    <button class="btn btn-neon" onclick="boot()">Verificar aprovação</button>
+    <button class="btn btn-ghost" onclick="logout()">Sair</button>
+  </div>
+</section>
+
+<!-- ============ APP ============ -->
+<main id="v-app" class="hidden">
+  <header class="top"><div class="wrap">
+    <div class="top-row">
+      <div class="brand"><div class="brand-mark">IPT</div><div class="brand-txt">Instituto<br>Performance<br>Total</div></div>
+      <button class="sair" onclick="confirmLogout()">Sair</button>
+    </div>
+  </div></header>
+
+  <div class="wrap">
+    <h2 class="h-display hello">Olá, <span id="a-nome"></span></h2>
+    <div class="chips" id="a-chips"></div>
+
+    <!-- AGENDA -->
+    <section id="t-agenda" style="margin-top:18px">
+      <div id="bday-slot"></div>
+      <div class="days" id="days"></div>
+      <div class="section-title"><h3 class="h-display" id="day-title"></h3><small id="day-sub"></small></div>
+      <div class="list" id="aulas"><div class="loading"><div class="spin"></div>Carregando aulas…</div></div>
+    </section>
+
+    <!-- MINHAS RESERVAS -->
+    <section id="t-reservas" class="hidden" style="margin-top:18px">
+      <div id="stats"></div>
+      <div class="section-title"><h3 class="h-display">Próximas aulas</h3></div>
+      <div id="proximas"></div>
+      <div class="section-title" style="margin-top:24px"><h3 class="h-display">Histórico</h3></div>
+      <div id="historico"></div>
+    </section>
+    <p class="foot">Instituto Performance Total · Agendamento de aulas</p>
+  </div>
+
+  <nav class="nav"><div class="nav-in">
+    <button id="n-agenda" class="on" onclick="tab('agenda')"><span class="i">📅</span>Agenda</button>
+    <button id="n-reservas" onclick="tab('reservas')"><span class="i">✓</span><span>Minhas reservas<span id="n-count"></span></span></button>
+  </div></nav>
+</main>
+
+<div id="modal-root"></div>
+
+<script>
+/* ================= Configuração ================= */
+const SB_URL = 'https://kycpchnogfgjfvuofkkb.supabase.co';
+const SB_KEY = 'sb_publishable__Htw3yB-sDxvsCKo_WDnOA_IBRPWZKx';
+const TK = 'ipt_token';
+const DIAS = ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'];
+const DIAS_LONGO = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+const PLANOS = {mensalista:'Mensalista', wellhub:'Wellhub', totalpass:'TotalPass'};
+
+const S = { token:null, perfil:null, aulas:[], dia:null, reservas:null, aba:'agenda', timer:null };
+
+/* ================= Utilidades ================= */
+function lsGet(k){ try{ return localStorage.getItem(k) }catch(e){ return null } }
+function lsSet(k,v){ try{ v===null ? localStorage.removeItem(k) : localStorage.setItem(k,v) }catch(e){} }
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function parseD(s){ const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); }
+function hojeStr(){ const d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function rotuloDia(s){
+  const h = hojeStr(); const d = parseD(s);
+  const am = new Date(parseD(h)); am.setDate(am.getDate()+1);
+  if (s === h) return 'Hoje';
+  if (d.getTime() === am.getTime()) return 'Amanhã';
+  return DIAS_LONGO[d.getDay()];
+}
+function dataCurta(s){ const d = parseD(s); return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0'); }
+
+async function rpc(fn, args){
+  let r;
+  try{
+    r = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`, {
+      method:'POST', headers:{ apikey:SB_KEY, 'Content-Type':'application/json' }, body: JSON.stringify(args || {})
+    });
+  }catch(e){ throw new Error('Sem conexão. Verifique sua internet.'); }
+  const data = await r.json().catch(() => null);
+  if (!r.ok) throw new Error((data && data.message) || 'Algo deu errado. Tente de novo.');
+  return data;
+}
+
+function toast(msg){
+  const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2800);
+}
+function go(id){
+  ['v-welcome','v-cadastro','v-entrar','v-pendente','v-app'].forEach(v => $(v).classList.toggle('hidden', v !== id));
+  window.scrollTo(0,0);
+}
+function sheet(html){
+  const root = $('modal-root');
+  root.innerHTML = `<div class="overlay" onclick="if(event.target===this)closeSheet()"><div class="sheet"><div class="grab"></div>${html}</div></div>`;
+}
+function closeSheet(){ $('modal-root').innerHTML = ''; }
+
+/* máscara WhatsApp */
+function maskWhats(el){
+  el.addEventListener('input', () => {
+    let v = el.value.replace(/\D/g,'').slice(0,11);
+    if (v.length > 6) v = `(${v.slice(0,2)}) ${v.slice(2, v.length-4)}-${v.slice(-4)}`;
+    else if (v.length > 2) v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+    else if (v.length) v = `(${v}`;
+    el.value = v;
+  });
+}
+maskWhats($('c-whats')); maskWhats($('e-whats'));
+
+/* segmentos */
+document.querySelectorAll('.seg').forEach(seg => {
+  seg.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    seg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    seg.dataset.value = b.dataset.v;
+  });
+});
+
+/* ================= Sessão ================= */
+async function boot(){
+  S.token = lsGet(TK);
+  if (!S.token){ go('v-welcome'); return; }
+  try{
+    S.perfil = await rpc('meu_perfil', { p_token: S.token });
+  }catch(e){
+    lsSet(TK, null); S.token = null; go('v-welcome'); return;
+  }
+  if (S.perfil.status === 'pendente'){ $('p-nome').textContent = S.perfil.primeiro_nome; go('v-pendente'); return; }
+  if (S.perfil.status !== 'ativo'){
+    go('v-pendente');
+    $('p-nome').textContent = S.perfil.primeiro_nome;
+    document.querySelector('#v-pendente p').innerHTML = 'Seu cadastro não está ativo no momento. Fale com o Instituto para reativar.';
+    return;
+  }
+  go('v-app');
+  renderHeader();
+  await Promise.all([loadAulas(), loadReservas()]);
+  startAutoRefresh();
+}
+function logout(){ lsSet(TK, null); S.token = null; S.dia = null; stopAutoRefresh(); go('v-welcome'); }
+function confirmLogout(){
+  sheet(`<h3 class="h-display">Sair do app?</h3><p>Para entrar de novo, use seu WhatsApp e data de nascimento.</p>
+    <div class="stack"><button class="btn btn-neon" onclick="closeSheet();logout()">Sair</button>
+    <button class="btn btn-dark" onclick="closeSheet()">Continuar aqui</button></div>`);
+}
+async function demoLogin(w, n){
+  try{ const r = await rpc('entrar', { p_whatsapp:w, p_nascimento:n }); lsSet(TK, r.token); boot(); }
+  catch(e){ toast(e.message); }
+}
+
+$('f-cad').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err = $('c-err'); err.textContent = '';
+  const nome = $('c-nome').value.trim(), whats = $('c-whats').value, nasc = $('c-nasc').value;
+  const genero = document.querySelector('[data-name=genero]').dataset.value;
+  const plano = document.querySelector('[data-name=plano]').dataset.value;
+  if (nome.split(/\s+/).length < 2) return err.textContent = 'Informe nome e sobrenome.';
+  if (whats.replace(/\D/g,'').length < 10) return err.textContent = 'Informe seu WhatsApp com DDD.';
+  if (!nasc) return err.textContent = 'Informe sua data de nascimento.';
+  if (!genero) return err.textContent = 'Selecione seu gênero.';
+  if (!plano) return err.textContent = 'Selecione seu plano.';
+  if (!$('c-lgpd').checked) return err.textContent = 'É preciso aceitar o uso dos dados para continuar.';
+  const b = $('c-btn'); b.disabled = true; b.textContent = 'Enviando…';
+  try{
+    const r = await rpc('cadastrar_aluno', { p_nome:nome, p_whatsapp:whats, p_genero:genero, p_nascimento:nasc, p_plano:plano, p_consentimento:true });
+    lsSet(TK, r.token); boot();
+  }catch(ex){ err.textContent = ex.message; }
+  b.disabled = false; b.textContent = 'Enviar cadastro';
+});
+
+$('f-ent').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err = $('e-err'); err.textContent = '';
+  const w = $('e-whats').value, n = $('e-nasc').value;
+  if (w.replace(/\D/g,'').length < 10 || !n) return err.textContent = 'Preencha WhatsApp e data de nascimento.';
+  const b = $('e-btn'); b.disabled = true; b.textContent = 'Entrando…';
+  try{ const r = await rpc('entrar', { p_whatsapp:w, p_nascimento:n }); lsSet(TK, r.token); boot(); }
+  catch(ex){ err.textContent = ex.message; }
+  b.disabled = false; b.textContent = 'Entrar';
+});
+
+function openPrivacy(){
+  sheet(`<h3 class="h-display">Privacidade</h3>
+  <p>O Instituto Performance Total usa seu nome, WhatsApp, data de nascimento, gênero e plano somente para:</p>
+  <div class="sum">
+    <div><span>•</span><b style="text-align:left;flex:1;font-weight:500">Organizar as reservas e a lotação das aulas</b></div>
+    <div><span>•</span><b style="text-align:left;flex:1;font-weight:500">Liberar turmas exclusivas (ex.: Funcional Feminino)</b></div>
+    <div><span>•</span><b style="text-align:left;flex:1;font-weight:500">Entrar em contato sobre suas aulas e datas especiais</b></div>
+  </div>
+  <p>Seus dados não são vendidos nem compartilhados com terceiros. Você pode pedir a correção ou exclusão do seu cadastro a qualquer momento, direto com o Instituto.</p>
+  <button class="btn btn-neon" onclick="closeSheet()">Entendi</button>`);
+}
+
+/* ================= Cabeçalho ================= */
+function renderHeader(){
+  const p = S.perfil;
+  $('a-nome').textContent = p.primeiro_nome;
+  const chips = [`<span class="chip neon">${PLANOS[p.plano]}</span>`];
+  if (p.limite_semana != null) chips.push(`<span class="chip">${p.usadas_semana} de ${p.limite_semana} aulas nesta semana</span>`);
+  chips.push(`<span class="chip">💪 ${p.treinos_mes} treino${p.treinos_mes===1?'':'s'} no mês</span>`);
+  $('a-chips').innerHTML = chips.join('');
+  $('bday-slot').innerHTML = p.aniversario_hoje
+    ? `<div class="banner bday"><div class="e">🎉</div><div><b>Feliz aniversário, ${esc(p.primeiro_nome)}!</b><span>Toda a equipe do Instituto deseja um ano cheio de saúde e conquistas. Bora comemorar treinando?</span></div></div>` : '';
+}
+
+/* ================= Agenda ================= */
+async function loadAulas(silencioso){
+  try{
+    S.aulas = await rpc('listar_aulas', { p_token: S.token });
+    const datas = [...new Set(S.aulas.map(a => a.data))];
+    if (!S.dia || !datas.includes(S.dia)){
+      // primeiro dia que ainda tem aula reservável; senão, o primeiro
+      S.dia = datas.find(d => S.aulas.some(a => a.data === d && !a.encerrada && !a.cancelada)) || datas[0];
+    }
+    renderDias(); renderAulas();
+  }catch(e){
+    if (!silencioso) $('aulas').innerHTML = `<div class="empty">${esc(e.message)}<br><br><button class="btn btn-dark" onclick="loadAulas()">Tentar de novo</button></div>`;
+  }
+}
+function renderDias(){
+  const datas = [...new Set(S.aulas.map(a => a.data))];
+  $('days').innerHTML = datas.map(d => {
+    const dt = parseD(d);
+    const mine = S.aulas.some(a => a.data === d && a.minha_reserva_id);
+    return `<button class="day ${d===S.dia?'on':''} ${mine?'mine':''}" onclick="pickDia('${d}')">
+      <div class="dw">${d===hojeStr()?'HOJE':DIAS[dt.getDay()]}</div><div class="dn">${dt.getDate()}</div><div class="dot"></div></button>`;
+  }).join('');
+  const on = $('days').querySelector('.on'); if (on) on.scrollIntoView({ inline:'center', block:'nearest' });
+}
+function pickDia(d){ S.dia = d; renderDias(); renderAulas(); }
+
+function renderAulas(){
+  const lista = S.aulas.filter(a => a.data === S.dia);
+  $('day-title').textContent = rotuloDia(S.dia);
+  $('day-sub').textContent = dataCurta(S.dia) + ' · ' + lista.length + ' aula' + (lista.length===1?'':'s');
+  if (!lista.length){ $('aulas').innerHTML = `<div class="empty">Sem aulas neste dia.</div>`; return; }
+  // motivo que vale para o dia inteiro (1 por dia / limite semanal) aparece uma vez só
+  const minha = lista.find(a => a.minha_reserva_id);
+  const bloqueadas = lista.filter(a => !a.minha_reserva_id && !a.encerrada && !a.cancelada && a.ocupadas < a.vagas && a.motivo_bloqueio);
+  let topo = '', comum = null;
+  if (minha){
+    topo = `<div class="banner checkin" style="border-color:var(--neon);background:rgba(198,255,0,.07)"><div class="e">✅</div><div><b>Você já treina neste dia</b><span>${esc(minha.modalidade)} às ${minha.hora_inicio}. O limite é de 1 aula por dia.</span></div></div>`;
+    comum = 'dia';
+  } else if (bloqueadas.length && bloqueadas.every(a => a.motivo_bloqueio === bloqueadas[0].motivo_bloqueio)){
+    comum = bloqueadas[0].motivo_bloqueio;
+    topo = `<div class="banner checkin" style="border-color:var(--warn);background:rgba(255,201,60,.07)"><div class="e">ℹ️</div><div><b>Reservas indisponíveis</b><span>${esc(comum)}</span></div></div>`;
+  }
+  $('aulas').innerHTML = topo + lista.map(a => cardAula(a, comum)).join('');
+}
+function cardAula(a, comum){
+  const livres = a.vagas - a.ocupadas;
+  const lotada = livres <= 0;
+  const dots = Array.from({length:a.vagas}, (_,i) => `<i class="${i < a.ocupadas ? 'f':''}"></i>`).join('');
+  let cls = '', btn = '', info = '', motivo = '';
+  if (a.cancelada){
+    cls = 'is-past'; btn = `<button class="act off" disabled>Cancelada</button>`; info = 'Aula cancelada pelo Instituto';
+  } else if (a.minha_reserva_id){
+    cls = 'is-mine'; btn = `<button class="act mine" onclick="tab('reservas')">Reservado ✓</button>`;
+    info = lotada ? 'Turma completa' : `${livres} vaga${livres===1?'':'s'}`;
+  } else if (a.encerrada){
+    cls = 'is-past'; btn = `<button class="act off" disabled>Encerrada</button>`; info = 'Reservas encerradas';
+  } else if (lotada){
+    cls = 'is-full'; btn = `<button class="act full" disabled>Lotada</button>`; info = `${a.ocupadas}/${a.vagas} · turma cheia`;
+  } else if (a.motivo_bloqueio){
+    btn = `<button class="act off" disabled>Bloqueada</button>`;
+    info = `${livres} vaga${livres===1?'':'s'}`;
+    if (!comum || (comum !== 'dia' && comum !== a.motivo_bloqueio)) motivo = a.motivo_bloqueio;
+    if (comum === 'dia' && !a.motivo_bloqueio.includes('1 por dia')) motivo = a.motivo_bloqueio;
+  } else {
+    btn = `<button class="act go" onclick="pedirReserva(${a.aula_id})">Reservar</button>`;
+    info = livres === 1 ? 'Última vaga!' : `${livres} vagas`;
+  }
+  const last = !a.cancelada && !a.encerrada && livres === 1 && !a.minha_reserva_id;
+  return `<div class="aula ${cls}" style="--c:${a.cor}">
+    <div class="hr">${a.hora_inicio}<small>até ${a.hora_fim}</small></div>
+    <div><div class="mod">${esc(a.modalidade)}</div>
+      <div class="vagas ${last?'last':''}"><span class="dots">${dots}</span><span class="t">${info}</span></div>
+      ${motivo ? `<div class="motivo">${esc(motivo)}</div>` : ''}
+    </div>
+    <div>${btn}</div>
+  </div>`;
+}
+
+function pedirReserva(id){
+  const a = S.aulas.find(x => x.aula_id === id); if (!a) return;
+  const h = S.perfil.horas_cancelamento;
+  sheet(`<h3 class="h-display">Confirmar reserva</h3>
+    <div class="sum">
+      <div><span>Aula</span><b>${esc(a.modalidade)}</b></div>
+      <div><span>Dia</span><b>${rotuloDia(a.data)}, ${dataCurta(a.data)}</b></div>
+      <div><span>Horário</span><b>${a.hora_inicio} – ${a.hora_fim}</b></div>
+      <div><span>Vagas restantes</span><b>${a.vagas - a.ocupadas} de ${a.vagas}</b></div>
+    </div>
+    <div class="note info">Cancelamento livre até ${h}h antes da aula. Depois disso, o cancelamento fica registrado e o Instituto é avisado.</div>
+    <div class="stack"><button class="btn btn-neon" id="b-conf" onclick="reservar(${a.aula_id})">Confirmar reserva</button>
+    <button class="btn btn-dark" onclick="closeSheet()">Voltar</button></div>`);
+}
+
+async function reservar(id){
+  const b = $('b-conf'); if (b){ b.disabled = true; b.textContent = 'Reservando…'; }
+  try{
+    const r = await rpc('reservar', { p_token:S.token, p_aula_id:id });
+    if (!r.ok){
+      sheet(`<div class="big-ico" style="background:rgba(255,90,90,.1);border-color:var(--red)">✕</div>
+        <h3 class="h-display" style="text-align:center">Não foi possível</h3>
+        <p style="text-align:center">${esc(r.mensagem)}${r.mensagem.includes('lotada') ? '<br>Alguém foi mais rápido! Escolha outro horário.' : ''}</p>
+        <button class="btn btn-neon" onclick="closeSheet()">Ver outros horários</button>`);
+    } else {
+      sucessoReserva(r);
+    }
+  }catch(e){ closeSheet(); toast(e.message); }
+  await refreshTudo();
+}
+
+function sucessoReserva(r){
+  const d = r.data, ini = new Date(r.inicio), fim = new Date(r.fim);
+  const hh = x => String(x.getHours()).padStart(2,'0')+':'+String(x.getMinutes()).padStart(2,'0');
+  const checkin = r.lembrar_checkin
+    ? `<div class="note cyan"><b>📲 Não esqueça do check-in!</b><br>Ao chegar no Instituto, faça o check-in no app ${PLANOS[r.plano]}. Sem ele a aula não é registrada no seu plano.</div>` : '';
+  sheet(`<div class="ok-ico">✓</div>
+    <h3 class="h-display" style="text-align:center">Vaga garantida!</h3>
+    <p style="text-align:center">${esc(r.modalidade)} · ${rotuloDia(d)}, ${dataCurta(d)} · ${hh(ini)}–${hh(fim)}</p>
+    ${checkin}
+    <div class="stack">
+      <a class="btn btn-neon" style="text-align:center;text-decoration:none;display:block" target="_blank" rel="noopener" href="${linkGoogle(r.modalidade, ini, fim)}">Adicionar ao Google Agenda</a>
+      <button class="btn btn-ghost" onclick='baixarIcs(${JSON.stringify(r.modalidade)}, "${r.inicio}", "${r.fim}")'>Salvar na agenda do celular</button>
+      <button class="btn btn-dark" onclick="closeSheet()">Fechar</button>
+    </div>`);
+}
+
+/* ================= Agenda do celular ================= */
+function fmtUTC(d){ return d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,''); }
+function linkGoogle(mod, ini, fim){
+  const p = new URLSearchParams({ action:'TEMPLATE', text:`${mod} · Instituto Performance Total`,
+    dates:`${fmtUTC(ini)}/${fmtUTC(fim)}`, details:'Aula reservada pelo app do Instituto Performance Total.' });
+  return 'https://calendar.google.com/calendar/render?' + p.toString();
+}
+function baixarIcs(mod, iniS, fimS){
+  const ini = new Date(iniS), fim = new Date(fimS);
+  const ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//IPT//Agendamento//PT-BR','BEGIN:VEVENT',
+    'UID:'+fmtUTC(ini)+'-'+Math.random().toString(36).slice(2)+'@ipt','DTSTAMP:'+fmtUTC(new Date()),
+    'DTSTART:'+fmtUTC(ini),'DTEND:'+fmtUTC(fim),'SUMMARY:'+mod+' · Instituto Performance Total',
+    'BEGIN:VALARM','TRIGGER:-PT60M','ACTION:DISPLAY','DESCRIPTION:Sua aula começa em 1 hora','END:VALARM',
+    'END:VEVENT','END:VCALENDAR'].join('\r\n');
+  const url = URL.createObjectURL(new Blob([ics], { type:'text/calendar' }));
+  const a = document.createElement('a'); a.href = url; a.download = 'aula-ipt.ics'; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1000);
+}
+
+/* ================= Minhas reservas ================= */
+async function loadReservas(){
+  try{
+    S.reservas = await rpc('minhas_reservas', { p_token:S.token });
+    renderReservas();
+  }catch(e){ $('proximas').innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+function renderReservas(){
+  const p = S.perfil, R = S.reservas;
+  const n = R.proximas.length;
+  $('n-count').innerHTML = n ? `<span class="badge">${n}</span>` : '';
+
+  let stats = '';
+  if (p.limite_semana != null){
+    const pct = Math.min(100, p.usadas_semana / p.limite_semana * 100);
+    stats = `<div class="stat"><div class="stat-row"><div><div class="num">${p.usadas_semana}/${p.limite_semana}</div><div class="lbl">aulas usadas nesta semana</div></div>
+      <div class="lbl" style="text-align:right">💪 ${p.treinos_mes} treinos<br>no mês</div></div><div class="bar"><i style="width:${pct}%"></i></div></div>`;
+  } else {
+    stats = `<div class="stat"><div class="stat-row"><div><div class="num">${p.treinos_mes}</div><div class="lbl">treinos neste mês 💪</div></div>
+      <div class="lbl" style="text-align:right">${p.treinos_mes >= 8 ? 'Mandou bem! 🔥' : 'Bora manter<br>o ritmo!'}</div></div></div>`;
+  }
+  $('stats').innerHTML = stats;
+
+  $('proximas').innerHTML = n ? R.proximas.map(r => {
+    const hoje = r.data === hojeStr();
+    const alerta = r.cancelada_pelo_instituto
+      ? `<div class="alert" style="color:var(--red)">⚠ Esta aula foi cancelada pelo Instituto.</div>`
+      : (hoje && p.lembrar_checkin ? `<div class="alert">📲 Lembre de fazer o check-in no app ${PLANOS[p.plano]} ao chegar.</div>` : '');
+    return `<div class="res" style="${hoje?'border-color:var(--neon)':''}">
+      <div class="res-top"><div><div class="when">${rotuloDia(r.data)} · ${dataCurta(r.data)}</div>
+        <div class="mod">${esc(r.modalidade)}</div><div class="hrs">${r.hora_inicio} – ${r.hora_fim}</div></div>
+        <span class="pill presente" style="background:rgba(198,255,0,.14)">Confirmada</span></div>
+      ${alerta}
+      <div class="res-actions">
+        <a style="flex:1;text-align:center;text-decoration:none;border-radius:11px;padding:10px;font-weight:700;font-size:13px;border:1.5px solid var(--line);color:var(--txt)" target="_blank" rel="noopener" href="${linkGoogle(r.modalidade, new Date(r.inicio), new Date(r.fim))}">📅 Agenda</a>
+        ${r.pode_cancelar ? `<button class="danger" onclick="pedirCancelamento(${r.reserva_id})">Cancelar</button>` : ''}
+      </div></div>`;
+  }).join('') : `<div class="empty">Você ainda não tem aulas reservadas.<br><br><button class="btn btn-neon" onclick="tab('agenda')">Reservar uma aula</button></div>`;
+
+  $('historico').innerHTML = R.historico.length ? R.historico.map(h =>
+    `<div class="hist"><div><b>${esc(h.modalidade)}</b><br><span>${dataCurta(h.data)} · ${h.hora_inicio}</span></div>
+     <div><span class="pill ${h.status}">${h.status === 'falta' ? 'Falta' : 'Presente'}</span></div></div>`).join('')
+    : `<div class="empty">Seu histórico aparece aqui depois das primeiras aulas.</div>`;
+}
+
+function pedirCancelamento(id){
+  const r = S.reservas.proximas.find(x => x.reserva_id === id); if (!r) return;
+  const h = S.perfil.horas_cancelamento;
+  const aviso = r.cancelamento_tardio
+    ? `<div class="note warn">⚠ Faltam menos de ${h}h para a aula. O cancelamento será registrado e o Instituto será avisado.</div>`
+    : `<div class="note info">Ainda dentro do prazo: sua vaga será liberada para outro aluno.</div>`;
+  sheet(`<h3 class="h-display">Cancelar reserva?</h3>
+    <div class="sum"><div><span>Aula</span><b>${esc(r.modalidade)}</b></div>
+    <div><span>Quando</span><b>${rotuloDia(r.data)}, ${dataCurta(r.data)} · ${r.hora_inicio}</b></div></div>
+    ${aviso}
+    <div class="stack"><button class="btn btn-neon" style="background:var(--red);color:#fff" id="b-canc" onclick="cancelar(${id})">Sim, cancelar</button>
+    <button class="btn btn-dark" onclick="closeSheet()">Manter reserva</button></div>`);
+}
+async function cancelar(id){
+  const b = $('b-canc'); if (b){ b.disabled = true; b.textContent = 'Cancelando…'; }
+  try{ const r = await rpc('cancelar_reserva', { p_token:S.token, p_reserva_id:id }); closeSheet(); toast(r.mensagem); }
+  catch(e){ closeSheet(); toast(e.message); }
+  await refreshTudo();
+}
+
+/* ================= Navegação / atualização ================= */
+function tab(t){
+  S.aba = t;
+  $('t-agenda').classList.toggle('hidden', t !== 'agenda');
+  $('t-reservas').classList.toggle('hidden', t !== 'reservas');
+  $('n-agenda').classList.toggle('on', t === 'agenda');
+  $('n-reservas').classList.toggle('on', t === 'reservas');
+  window.scrollTo(0,0);
+}
+async function refreshTudo(){
+  try{ S.perfil = await rpc('meu_perfil', { p_token:S.token }); renderHeader(); }catch(e){}
+  await Promise.all([loadAulas(true), loadReservas()]);
+}
+function startAutoRefresh(){
+  stopAutoRefresh();
+  S.timer = setInterval(() => { if (!document.hidden && !$('modal-root').innerHTML) loadAulas(true); }, 15000);
+}
+function stopAutoRefresh(){ if (S.timer) clearInterval(S.timer); S.timer = null; }
+document.addEventListener('visibilitychange', () => { if (!document.hidden && S.token && S.perfil?.status === 'ativo') refreshTudo(); });
+
+boot();
+</script>
+</body>
+</html>

@@ -1,0 +1,857 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0B">
+<meta name="robots" content="noindex">
+<title>IPT · Painel do Instituto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0B0B; --bg2:#141414; --card:#1A1A1A; --card2:#232323; --line:#2C2C2C;
+  --txt:#F4F4F4; --muted:#9A9A9A; --neon:#C6FF00; --ink:#0B0B0B;
+  --pink:#FF6FB5; --cyan:#00E0FF; --warn:#FFC93C; --red:#FF5A5A; --wa:#25D366;
+  --r:16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--txt);font-family:Inter,system-ui,sans-serif;font-size:15px}
+body{min-height:100vh;padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+button{font-family:inherit;cursor:pointer;color:inherit}
+input,select,textarea{font-family:inherit}
+.hidden{display:none!important}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+.h-display{font-family:Anton,sans-serif;text-transform:uppercase;letter-spacing:.5px;line-height:1;margin:0}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark{width:38px;height:38px;border:3px solid var(--neon);border-radius:10px;display:grid;place-items:center;font-family:Anton,sans-serif;color:var(--neon);font-size:17px;transform:skewX(-8deg)}
+.brand-txt{font-weight:800;font-style:italic;color:var(--neon);line-height:1.05;font-size:11px;text-transform:uppercase}
+.tag-admin{font-size:10px;font-weight:800;letter-spacing:.8px;background:var(--neon);color:var(--ink);padding:3px 7px;border-radius:6px;margin-left:4px}
+
+/* login */
+.login{min-height:100vh;display:flex;flex-direction:column;justify-content:center;max-width:420px;margin:0 auto;padding:24px 16px}
+.login h1{font-size:44px;margin:28px 0 8px}
+.login p{color:var(--muted);margin:0 0 24px;line-height:1.5}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:7px}
+.inp{width:100%;background:var(--card);border:1.5px solid var(--line);color:var(--txt);border-radius:12px;padding:13px 14px;font-size:16px;outline:none}
+.inp:focus{border-color:var(--neon)}
+textarea.inp{min-height:92px;resize:vertical;line-height:1.45;font-size:15px}
+.btn{width:100%;border:0;border-radius:13px;padding:15px;font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.4px}
+.btn-neon{background:var(--neon);color:var(--ink)}
+.btn-dark{background:var(--card2);color:var(--txt)}
+.btn-red{background:var(--red);color:#fff}
+.btn-wa{background:var(--wa);color:#04210f}
+.btn:disabled{opacity:.45}
+.err{color:var(--red);font-weight:600;font-size:14px;min-height:20px;margin:0 0 10px}
+.hint{color:#666;font-size:12px;margin-top:16px;text-align:center}
+
+/* topo */
+.top{position:sticky;top:0;z-index:20;background:rgba(11,11,11,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:10px 0}
+.top-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.top-actions{display:flex;gap:8px;align-items:center}
+.ghost{background:var(--card);border:1px solid var(--line);height:36px;padding:0 12px;border-radius:11px;font-weight:700;font-size:13px;color:var(--muted)}
+.live{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);font-weight:600}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--neon);box-shadow:0 0 0 0 rgba(198,255,0,.6);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(198,255,0,0)}100%{box-shadow:0 0 0 0 rgba(198,255,0,0)}}
+
+.page-title{display:flex;justify-content:space-between;align-items:flex-end;margin:20px 0 14px;gap:10px;flex-wrap:wrap}
+.page-title h2{font-size:30px}
+.page-title small{color:var(--muted);font-weight:600}
+
+/* seletor de dia */
+.daynav{display:flex;align-items:center;gap:8px}
+.daynav button{background:var(--card);border:1px solid var(--line);width:38px;height:38px;border-radius:11px;font-size:16px;font-weight:800}
+.daynav .lbl{min-width:118px;text-align:center;font-weight:800;font-size:14px}
+.daynav .lbl small{display:block;color:var(--muted);font-weight:600;font-size:11px}
+
+/* resumo */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:left}
+.kpi .n{font-family:Anton,sans-serif;font-size:28px;line-height:1}
+.kpi .l{color:var(--muted);font-size:11.5px;font-weight:700;margin-top:4px;line-height:1.25}
+@media (max-width:520px){.kpis{grid-template-columns:repeat(2,1fr)}}
+
+/* blocos de atenção */
+.alert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:22px}
+.alert{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px;text-align:left;display:flex;gap:10px;align-items:center}
+.alert .e{font-size:22px}
+.alert b{display:block;font-size:20px;font-family:Anton,sans-serif;line-height:1}
+.alert span{font-size:12px;color:var(--muted);font-weight:700}
+.alert.hot{border-color:var(--neon)}
+.alert.zero{opacity:.5}
+
+.sec{margin:0 0 24px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.sec-h h3{font-size:20px}
+.sec-h small{color:var(--muted);font-weight:600;font-size:12px}
+
+/* aulas */
+.aula{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);margin-bottom:10px;overflow:hidden;position:relative}
+.aula::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.aula-head{width:100%;background:none;border:0;display:grid;grid-template-columns:62px minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 14px 14px 16px;text-align:left}
+.aula-head .hr{font-family:Anton,sans-serif;font-size:22px;line-height:1}
+.aula-head .hr small{display:block;font-family:Inter;font-size:11px;color:var(--muted);font-weight:600;margin-top:4px}
+.aula-head .mod{font-weight:800;font-size:15px;margin-bottom:5px}
+.st{font-size:11px;font-weight:800;padding:3px 8px;border-radius:99px;text-transform:uppercase;letter-spacing:.3px;display:inline-block}
+.st.now{background:var(--neon);color:var(--ink)}
+.st.done{background:#2a2a2a;color:var(--muted)}
+.st.check{background:rgba(255,201,60,.14);color:var(--warn)}
+.st.canc{background:rgba(255,90,90,.15);color:var(--red)}
+.ocup{text-align:right}
+.ocup b{font-family:Anton,sans-serif;font-size:24px}
+.ocup b.full{color:var(--neon)}
+.ocup small{display:block;color:var(--muted);font-size:11px;font-weight:700}
+.meter{display:flex;gap:3px;margin-top:2px}
+.meter i{width:9px;height:9px;border-radius:50%;background:#333;display:block}
+.meter i.f{background:var(--c)}
+.aula-body{border-top:1px solid var(--line);padding:6px 14px 14px 16px}
+.pessoa{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #232323}
+.pessoa:last-of-type{border-bottom:0}
+.av{width:36px;height:36px;border-radius:50%;background:var(--card2);display:grid;place-items:center;font-weight:800;font-size:13px;flex:0 0 auto;color:var(--muted)}
+.pessoa .nm{flex:1;min-width:0}
+.pessoa .nm b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pessoa .nm span{font-size:12px;color:var(--muted);font-weight:600}
+.plano{font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:6px;text-transform:uppercase;letter-spacing:.3px}
+.plano.mensalista{background:rgba(198,255,0,.12);color:var(--neon)}
+.plano.wellhub{background:rgba(255,111,181,.13);color:var(--pink)}
+.plano.totalpass{background:rgba(0,224,255,.12);color:var(--cyan)}
+.wa{background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.4);color:var(--wa);height:36px;padding:0 12px;border-radius:10px;font-weight:800;font-size:13px;flex:0 0 auto;display:flex;align-items:center;gap:6px}
+.wa svg{width:16px;height:16px}
+.wa.ic{padding:0 10px}
+.wa.ic .t{display:none}
+.pres{display:flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;flex:0 0 auto}
+.pres button{background:none;border:0;padding:8px 10px;font-weight:800;font-size:12px;color:var(--muted)}
+.pres button.on-p{background:rgba(198,255,0,.15);color:var(--neon)}
+.pres button.on-f{background:rgba(255,90,90,.16);color:var(--red)}
+.tardio{opacity:.55}
+.aula-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.aula-actions button{flex:1;min-width:140px;border-radius:11px;padding:11px;font-weight:700;font-size:13px;border:1.5px solid var(--line);background:transparent}
+.aula-actions .pri{background:var(--neon);color:var(--ink);border-color:var(--neon);font-weight:800}
+.aula-actions .dan{color:var(--red);border-color:rgba(255,90,90,.35)}
+.vazio{color:var(--muted);text-align:center;padding:18px 10px;font-size:14px}
+.empty{color:var(--muted);text-align:center;padding:26px 12px;background:var(--card);border-radius:var(--r);border:1px dashed var(--line);line-height:1.5}
+
+/* listas de cuidado */
+.list-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:4px 14px}
+.row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #232323}
+.row:last-child{border-bottom:0}
+.row .nm{flex:1;min-width:0}
+.row .nm b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .nm span{font-size:12px;color:var(--muted);font-weight:600}
+.lvl{font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:6px;text-transform:uppercase}
+.lvl.risco{background:rgba(255,90,90,.15);color:var(--red)}
+.lvl.atencao{background:rgba(255,201,60,.14);color:var(--warn)}
+.ok-tag{font-size:11px;color:var(--neon);font-weight:700}
+.mini{background:var(--card2);border:1px solid var(--line);height:36px;padding:0 11px;border-radius:10px;font-weight:700;font-size:12.5px;flex:0 0 auto}
+.mini.neon{background:var(--neon);color:var(--ink);border-color:var(--neon)}
+.mini.red{color:var(--red)}
+.prog{height:6px;background:#2a2a2a;border-radius:99px;overflow:hidden;margin-top:6px;display:flex;gap:2px}
+.prog i{display:block;height:100%}
+.prog .a{background:var(--neon);border-radius:99px 0 0 99px}
+.prog .b{background:rgba(198,255,0,.35)}
+.aviso{display:flex;gap:10px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #232323;font-size:14px;line-height:1.4}
+.aviso:last-child{border-bottom:0}
+.aviso time{display:block;color:var(--muted);font-size:12px;font-weight:600;margin-top:2px}
+
+/* alunos */
+.toolbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.toolbar .inp{flex:1;min-width:180px;padding:11px 13px;font-size:15px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{background:var(--card);border:1.5px solid var(--line);color:var(--muted);padding:7px 12px;border-radius:99px;font-weight:700;font-size:12.5px}
+.chip.on{border-color:var(--neon);color:var(--neon);background:rgba(198,255,0,.08)}
+.aluno{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:center;width:100%;text-align:left}
+.aluno .nm{flex:1;min-width:0}
+.aluno .nm b{display:block;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aluno .meta{font-size:12px;color:var(--muted);font-weight:600;margin-top:3px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* indicadores */
+.bars{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.bar-row{display:grid;grid-template-columns:118px minmax(0,1fr) 44px;gap:10px;align-items:center;padding:6px 0;font-size:13px}
+.bar-row .lb{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-row .lb small{display:block;color:var(--muted);font-weight:600;font-size:11px}
+.bar-track{height:14px;background:#222;border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:0 4px 4px 0;background:var(--neon)}
+.bar-row .v{text-align:right;font-weight:800;font-variant-numeric:tabular-nums}
+.bar-row:hover .lb{color:var(--neon)}
+.legend-note{color:var(--muted);font-size:12px;margin-top:10px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:600px){.two{grid-template-columns:1fr}}
+.seg{display:flex;gap:6px}
+
+/* ajustes */
+.set-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px}
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #232323}
+.set-row:last-child{border-bottom:0}
+.set-row label{font-size:14px;font-weight:600}
+.set-row label small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:2px}
+.num{width:76px;text-align:center;padding:9px}
+.stepper{display:flex;align-items:center;gap:6px}
+.stepper button{width:32px;height:32px;border-radius:9px;background:var(--card2);border:1px solid var(--line);font-weight:800}
+.stepper b{min-width:22px;text-align:center}
+.grade-day{font-size:12px;font-weight:800;color:var(--neon);text-transform:uppercase;letter-spacing:.6px;margin:14px 0 4px}
+.switch{position:relative;width:44px;height:26px;flex:0 0 auto}
+.switch input{opacity:0;width:0;height:0}
+.switch span{position:absolute;inset:0;background:#333;border-radius:99px;transition:.2s}
+.switch span::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}
+.switch input:checked + span{background:var(--neon)}
+.switch input:checked + span::after{transform:translateX(18px);background:#000}
+
+/* nav */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(11,11,11,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:8px 12px calc(8px + env(safe-area-inset-bottom))}
+.nav-in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.nav button{background:none;border:0;color:var(--muted);padding:7px 4px;border-radius:12px;font-weight:700;font-size:11.5px;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative}
+.nav button .i{font-size:19px}
+.nav button.on{color:var(--neon);background:rgba(198,255,0,.08)}
+.dot-badge{position:absolute;top:4px;right:calc(50% - 20px);background:var(--red);color:#fff;font-size:10px;font-weight:800;border-radius:99px;padding:1px 5px}
+
+/* sheet */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:50;display:flex;align-items:flex-end;justify-content:center;animation:fade .15s}
+.sheet{background:var(--bg2);border:1px solid var(--line);border-bottom:0;width:100%;max-width:560px;border-radius:22px 22px 0 0;padding:10px 18px calc(22px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto;animation:up .22s ease-out}
+@media (min-width:700px){.overlay{align-items:center}.sheet{border-radius:22px;border-bottom:1px solid var(--line)}}
+.grab{width:44px;height:5px;background:#3a3a3a;border-radius:99px;margin:0 auto 14px}
+.sheet h3{font-size:26px;margin:0 0 6px}
+.sheet p.sub{color:var(--muted);line-height:1.5;margin:0 0 14px;font-size:14px}
+.tpl{width:100%;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px;text-align:left;margin-bottom:8px}
+.tpl.on{border-color:var(--wa)}
+.tpl b{display:block;font-size:13.5px;margin-bottom:3px}
+.tpl span{font-size:12.5px;color:var(--muted);line-height:1.4;display:block}
+.stack{display:grid;gap:8px}
+.kv{background:var(--card);border-radius:12px;padding:12px;margin-bottom:12px;display:grid;gap:7px;font-size:14px}
+.kv div{display:flex;justify-content:space-between;gap:10px}
+.kv span{color:var(--muted)}
+.note{font-size:13px;line-height:1.45;border-radius:12px;padding:12px;margin-bottom:12px;background:rgba(198,255,0,.07);color:#dfffa0}
+.note.warn{background:rgba(255,201,60,.1);color:var(--warn)}
+.toast{position:fixed;left:50%;bottom:calc(98px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#fff;color:#000;font-weight:700;padding:12px 18px;border-radius:12px;z-index:60;max-width:calc(100% - 32px);font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.5);animation:up .2s}
+.loading{color:var(--muted);text-align:center;padding:30px}
+.spin{width:22px;height:22px;border:3px solid #333;border-top-color:var(--neon);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+@keyframes fade{from{opacity:0}}
+@media (max-width:420px){ .live .lt{display:none} .pres button{padding:8px 8px} }
+@media (max-width:380px){
+  .brand-txt{display:none}
+  .aula-head{grid-template-columns:52px minmax(0,1fr) auto;gap:10px}
+  .aula-head .hr{font-size:19px}
+  .wa .t{display:none}
+  .page-title h2{font-size:26px}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<section id="v-login" class="login hidden">
+  <div class="brand"><div class="brand-mark">IPT</div><div class="brand-txt">Instituto<br>Performance<br>Total</div></div>
+  <h1 class="h-display">Painel do <span style="color:var(--neon)">Instituto</span></h1>
+  <p>Acesso exclusivo da equipe: reservas do dia, presença, alunos e avisos.</p>
+  <form id="f-login" novalidate>
+    <div class="field"><label>Senha</label><input id="l-senha" class="inp" type="password" autocomplete="current-password" placeholder="••••••"></div>
+    <div class="err" id="l-err"></div>
+    <button class="btn btn-neon" id="l-btn">Entrar</button>
+  </form>
+  <div class="hint">Demonstração · senha: ipt2026</div>
+</section>
+
+<!-- ================= APP ================= -->
+<main id="v-app" class="hidden">
+  <header class="top"><div class="wrap top-row">
+    <div class="brand"><div class="brand-mark">IPT</div><div class="brand-txt">Instituto<br>Performance<br>Total</div><span class="tag-admin">ADMIN</span></div>
+    <div class="top-actions"><span class="live" title="Atualiza sozinho a cada 15 segundos"><i></i><span class="lt">Ao vivo</span></span><button class="ghost" onclick="sair()">Sair</button></div>
+  </div></header>
+
+  <div class="wrap">
+    <!-- HOJE -->
+    <section id="t-hoje">
+      <div class="page-title">
+        <h2 class="h-display" id="h-titulo">Hoje</h2>
+        <div class="daynav">
+          <button onclick="mudaDia(-1)" aria-label="Dia anterior">‹</button>
+          <div class="lbl" id="h-data"></div>
+          <button onclick="mudaDia(1)" aria-label="Próximo dia">›</button>
+        </div>
+      </div>
+      <div class="kpis" id="h-kpis"></div>
+      <div class="alert-grid" id="h-alertas"></div>
+      <div class="sec">
+        <div class="sec-h"><h3 class="h-display">Aulas do dia</h3><small>Toque para ver a lista</small></div>
+        <div id="h-aulas"><div class="loading"><div class="spin"></div>Carregando…</div></div>
+      </div>
+      <div class="sec" id="s-pendentes"></div>
+      <div class="sec" id="s-aniv"></div>
+      <div class="sec" id="s-sumidos"></div>
+      <div class="sec" id="s-parceiros"></div>
+      <div class="sec" id="s-avisos"></div>
+    </section>
+
+    <!-- ALUNOS -->
+    <section id="t-alunos" class="hidden">
+      <div class="page-title"><h2 class="h-display">Alunos</h2><small id="a-count"></small></div>
+      <div class="toolbar"><input class="inp" id="a-busca" placeholder="Buscar por nome ou WhatsApp" oninput="renderAlunos()"></div>
+      <div class="chips" id="a-filtros"></div>
+      <div id="a-lista"><div class="loading"><div class="spin"></div>Carregando…</div></div>
+    </section>
+
+    <!-- INDICADORES -->
+    <section id="t-ind" class="hidden">
+      <div class="page-title"><h2 class="h-display">Indicadores</h2>
+        <div class="seg" id="i-periodo">
+          <button class="chip" data-d="7">7 dias</button><button class="chip on" data-d="30">30 dias</button><button class="chip" data-d="90">90 dias</button>
+        </div>
+      </div>
+      <div id="i-corpo"><div class="loading"><div class="spin"></div>Carregando…</div></div>
+    </section>
+
+    <!-- AJUSTES -->
+    <section id="t-ajustes" class="hidden">
+      <div class="page-title"><h2 class="h-display">Ajustes</h2></div>
+      <div id="c-corpo"><div class="loading"><div class="spin"></div>Carregando…</div></div>
+    </section>
+  </div>
+
+  <nav class="nav"><div class="nav-in">
+    <button id="n-hoje" class="on" onclick="aba('hoje')"><span class="i">📋</span>Hoje<span id="n-badge"></span></button>
+    <button id="n-alunos" onclick="aba('alunos')"><span class="i">👥</span>Alunos</button>
+    <button id="n-ind" onclick="aba('ind')"><span class="i">📊</span>Indicadores</button>
+    <button id="n-ajustes" onclick="aba('ajustes')"><span class="i">⚙️</span>Ajustes</button>
+  </div></nav>
+</main>
+
+<div id="modal-root"></div>
+
+<script>
+/* ================= Configuração ================= */
+const SB_URL = 'https://kycpchnogfgjfvuofkkb.supabase.co';
+const SB_KEY = 'sb_publishable__Htw3yB-sDxvsCKo_WDnOA_IBRPWZKx';
+const KS = 'ipt_admin';
+const DIAS_LONGO = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+const DIA_ISO = ['','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+const PLANOS = { mensalista:'Mensalista', wellhub:'Wellhub', totalpass:'TotalPass' };
+const WA_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>';
+
+const S = { senha:null, dia:null, hoje:null, painel:null, abertas:new Set(), alunos:null, filtro:'todos', ind:null, periodo:30, cfg:null, grade:null, timer:null };
+
+/* ================= Utilidades ================= */
+function lsGet(k){ try{ return localStorage.getItem(k) }catch(e){ return null } }
+function lsSet(k,v){ try{ v===null ? localStorage.removeItem(k) : localStorage.setItem(k,v) }catch(e){} }
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const attr = s => esc(JSON.stringify(s));
+const primeiro = n => String(n||'').split(' ')[0];
+const iniciais = n => String(n||'').split(' ').filter(Boolean).slice(0,2).map(p => p[0]).join('').toUpperCase();
+function parseD(s){ const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); }
+function fmtD(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function addDias(s, n){ const d = parseD(s); d.setDate(d.getDate()+n); return fmtD(d); }
+function dataCurta(s){ const d = parseD(s); return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0'); }
+function rotuloDia(s){
+  if (!S.hoje) return DIAS_LONGO[parseD(s).getDay()];
+  if (s === S.hoje) return 'Hoje';
+  if (s === addDias(S.hoje, 1)) return 'Amanhã';
+  if (s === addDias(S.hoje, -1)) return 'Ontem';
+  return DIAS_LONGO[parseD(s).getDay()];
+}
+function quando(s){ if (!s) return ''; if (s === S.hoje) return 'hoje'; if (s === addDias(S.hoje,1)) return 'amanhã'; return 'no dia ' + dataCurta(s); }
+function haQuanto(iso){
+  const min = Math.round((Date.now() - new Date(iso)) / 60000);
+  if (min < 60) return `há ${Math.max(min,1)} min`;
+  if (min < 1440) return `há ${Math.round(min/60)}h`;
+  const d = Math.round(min/1440); return d === 1 ? 'ontem' : `há ${d} dias`;
+}
+const fmtWhats = w => { const n = String(w).replace(/^55/,''); return n.length === 11 ? `(${n.slice(0,2)}) ${n.slice(2,7)}-${n.slice(7)}` : n; };
+
+async function rpc(fn, args){
+  let r;
+  try{
+    r = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`, { method:'POST', headers:{ apikey:SB_KEY, 'Content-Type':'application/json' }, body: JSON.stringify(args || {}) });
+  }catch(e){ throw new Error('Sem conexão. Verifique sua internet.'); }
+  const data = await r.json().catch(() => null);
+  if (!r.ok){
+    const msg = (data && data.message) || 'Algo deu errado. Tente de novo.';
+    if (msg.includes('Senha de administrador')){ sair(true); }
+    throw new Error(msg);
+  }
+  return data;
+}
+const adm = (fn, args) => rpc(fn, { p_senha:S.senha, ...(args||{}) });
+
+function toast(msg){ const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2800); }
+function sheet(html){ $('modal-root').innerHTML = `<div class="overlay" onclick="if(event.target===this)fecha()"><div class="sheet"><div class="grab"></div>${html}</div></div>`; }
+function fecha(){ $('modal-root').innerHTML = ''; }
+const aberto = () => !!$('modal-root').innerHTML;
+
+/* ================= WhatsApp ================= */
+function msgModelo(chave){ const m = (S.painel?.mensagens || S.cfg?.mensagens || []).find(x => x.chave === chave); return m ? m.texto : 'Oi, {nome}! '; }
+function preencher(txt, ctx){
+  return txt.replaceAll('{nome}', primeiro(ctx.nome)).replaceAll('{modalidade}', ctx.modalidade || '')
+    .replaceAll('{quando}', quando(ctx.data)).replaceAll('{horario}', ctx.horario || '').replaceAll('{treinos}', ctx.treinos ?? '');
+}
+function linkWa(numero, texto){ return `https://wa.me/${String(numero).replace(/\D/g,'')}?text=${encodeURIComponent(texto)}`; }
+function abrirWa(numero, texto){ window.open(linkWa(numero, texto), '_blank', 'noopener'); }
+
+// menu de mensagens prontas para um aluno de uma turma
+function menuWa(ctx, chaves){
+  const lista = (S.painel?.mensagens || []).filter(m => chaves.includes(m.chave));
+  S.ctxWa = ctx;
+  sheet(`<h3 class="h-display">Mensagem para ${esc(primeiro(ctx.nome))}</h3>
+    <p class="sub">${ctx.modalidade ? esc(ctx.modalidade) + ' · ' + esc(rotuloDia(ctx.data)) + ' às ' + esc(ctx.horario) + ' · ' : ''}${fmtWhats(ctx.whatsapp)}</p>
+    <div id="tpls">${lista.map((m,i) => `<button class="tpl ${i===0?'on':''}" data-k="${m.chave}" onclick="escolheTpl('${m.chave}')"><b>${esc(m.titulo)}</b><span>${esc(preencher(m.texto, ctx))}</span></button>`).join('')}</div>
+    <div class="field"><label>Texto (você pode editar antes de enviar)</label><textarea class="inp" id="wa-txt">${esc(preencher(lista[0]?.texto || 'Oi, {nome}! ', ctx))}</textarea></div>
+    <div class="stack"><button class="btn btn-wa" onclick="enviaWa()">Abrir no WhatsApp</button><button class="btn btn-dark" onclick="fecha()">Cancelar</button></div>`);
+}
+function escolheTpl(k){
+  document.querySelectorAll('#tpls .tpl').forEach(b => b.classList.toggle('on', b.dataset.k === k));
+  $('wa-txt').value = preencher(msgModelo(k), S.ctxWa);
+}
+function enviaWa(){
+  const txt = $('wa-txt').value;
+  abrirWa(S.ctxWa.whatsapp, txt);
+  const cb = S.ctxWa.depois; fecha(); if (cb) cb();
+}
+
+/* ================= Sessão ================= */
+async function boot(){
+  S.senha = lsGet(KS);
+  if (!S.senha){ mostra('v-login'); return; }
+  mostra('v-app');
+  await carregaPainel();
+  iniciaAuto();
+}
+function mostra(id){ ['v-login','v-app'].forEach(v => $(v).classList.toggle('hidden', v !== id)); window.scrollTo(0,0); }
+function sair(expirou){
+  lsSet(KS, null); S.senha = null; paraAuto(); fecha(); mostra('v-login');
+  if (expirou === true) $('l-err').textContent = 'A senha mudou ou expirou. Entre de novo.';
+}
+$('f-login').addEventListener('submit', async e => {
+  e.preventDefault();
+  const senha = $('l-senha').value, err = $('l-err'); err.textContent = '';
+  if (!senha) return err.textContent = 'Digite a senha.';
+  const b = $('l-btn'); b.disabled = true; b.textContent = 'Entrando…';
+  try{
+    const ok = await rpc('admin_login', { p_senha:senha });
+    if (!ok){ err.textContent = 'Senha incorreta.'; }
+    else { lsSet(KS, senha); $('l-senha').value = ''; boot(); }
+  }catch(ex){ err.textContent = ex.message; }
+  b.disabled = false; b.textContent = 'Entrar';
+});
+
+/* ================= Navegação ================= */
+function aba(t){
+  ['hoje','alunos','ind','ajustes'].forEach(x => { $('t-'+x).classList.toggle('hidden', x !== t); $('n-'+x).classList.toggle('on', x === t); });
+  S.aba = t; window.scrollTo(0,0);
+  if (t === 'alunos') carregaAlunos();
+  if (t === 'ind') carregaInd();
+  if (t === 'ajustes') carregaAjustes();
+  if (t === 'hoje') carregaPainel(true);
+}
+function iniciaAuto(){ paraAuto(); S.timer = setInterval(() => { if (!document.hidden && !aberto() && S.aba !== 'ajustes' && (S.aba||'hoje') === 'hoje') carregaPainel(true); }, 15000); }
+function paraAuto(){ if (S.timer) clearInterval(S.timer); S.timer = null; }
+document.addEventListener('visibilitychange', () => { if (!document.hidden && S.senha && (S.aba||'hoje') === 'hoje') carregaPainel(true); });
+
+/* ================= HOJE ================= */
+async function carregaPainel(silencioso){
+  try{
+    const p = await adm('admin_painel', S.dia ? { p_dia:S.dia } : {});
+    S.painel = p; S.hoje = p.hoje; if (!S.dia) S.dia = p.dia;
+    renderPainel();
+  }catch(e){ if (!silencioso) $('h-aulas').innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+function mudaDia(n){ S.dia = addDias(S.dia, n); S.abertas.clear(); $('h-aulas').innerHTML = '<div class="loading"><div class="spin"></div></div>'; carregaPainel(); }
+
+function renderPainel(){
+  const p = S.painel;
+  $('h-titulo').textContent = rotuloDia(p.dia);
+  $('h-data').innerHTML = `${DIAS_LONGO[parseD(p.dia).getDay()]}<small>${dataCurta(p.dia)}</small>`;
+
+  // resumo do dia
+  const ativas = p.aulas.filter(a => !a.cancelada);
+  const reservas = ativas.reduce((s,a) => s + a.ocupadas, 0);
+  const vagas = ativas.reduce((s,a) => s + a.vagas, 0);
+  const lotadas = ativas.filter(a => a.ocupadas >= a.vagas).length;
+  const conferir = ativas.filter(a => a.terminou && !a.fechada && a.ocupadas > 0).length;
+  $('h-kpis').innerHTML = [
+    [reservas, 'reservas'], [vagas ? Math.round(reservas/vagas*100)+'%' : '–', 'de ocupação'],
+    [lotadas, lotadas === 1 ? 'turma lotada' : 'turmas lotadas'], [conferir, 'presenças a conferir']
+  ].map(([n,l]) => `<div class="kpi"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
+
+  // atalhos de atenção
+  const avisos = p.avisos.filter(a => a.tipo !== 'novo_cadastro');
+  const nAnivHoje = p.aniversariantes.filter(a => a.eh_hoje).length;
+  const sumPend = p.sumidos.filter(s => !s.contatado_recentemente).length;
+  const al = [
+    ['📝', p.pendentes.length, 'cadastros pendentes', 's-pendentes'],
+    ['🎂', p.aniversariantes.length, nAnivHoje ? `aniversário${p.aniversariantes.length>1?'s':''} (${nAnivHoje} hoje)` : 'aniversários na semana', 's-aniv'],
+    ['🔴', sumPend, 'alunos sumidos', 's-sumidos'],
+    ['📉', p.parceiros_ritmo.length, 'Wellhub/TotalPass abaixo da meta', 's-parceiros'],
+    ['🔔', avisos.length, 'avisos novos', 's-avisos']
+  ];
+  $('h-alertas').innerHTML = al.map(([e,n,l,id]) => `<button class="alert ${n? (id==='s-pendentes'||id==='s-avisos'?'hot':'') : 'zero'}" onclick="document.getElementById('${id}').scrollIntoView({behavior:'smooth',block:'start'})"><span class="e">${e}</span><div><b>${n}</b><span>${l}</span></div></button>`).join('');
+  const badge = p.pendentes.length + avisos.length;
+  $('n-badge').innerHTML = badge ? `<span class="dot-badge">${badge}</span>` : '';
+
+  // aulas
+  $('h-aulas').innerHTML = p.aulas.length ? p.aulas.map(cardAula).join('') : `<div class="empty">Não há aulas neste dia.</div>`;
+
+  renderPendentes(); renderAniv(); renderSumidos(); renderParceiros(); renderAvisos(avisos);
+}
+
+function statusAula(a){
+  if (a.cancelada) return `<span class="st canc">Cancelada</span>`;
+  if (a.em_andamento) return `<span class="st now">Acontecendo agora</span>`;
+  if (a.terminou && !a.fechada && a.ocupadas > 0) return `<span class="st check">Conferir presença</span>`;
+  if (a.terminou) return `<span class="st done">Concluída</span>`;
+  return '';
+}
+function cardAula(a){
+  const aberta = S.abertas.has(a.aula_id);
+  const cheia = a.ocupadas >= a.vagas;
+  const meter = Array.from({length:a.vagas}, (_,i) => `<i class="${i < a.ocupadas ? 'f':''}"></i>`).join('');
+  const conferindo = a.terminou && !a.cancelada;
+  const ctxBase = { modalidade:a.modalidade, data:S.painel.dia, horario:a.hora_inicio };
+  const pessoas = a.alunos.map(al => {
+    const ctx = { ...ctxBase, nome:al.nome, whatsapp:al.whatsapp };
+    const tardio = al.status === 'cancelada_tarde';
+    const presToggle = conferindo && !tardio
+      ? `<div class="pres"><button class="${al.status==='presente'||(al.status==='confirmada')?'on-p':''}" onclick="presenca(${al.reserva_id},'presente')">✓</button><button class="${al.status==='falta'?'on-f':''}" onclick="presenca(${al.reserva_id},'falta')">Faltou</button></div>` : '';
+    const chaves = conferindo ? (al.status === 'falta' ? ['faltou','livre'] : ['livre','faltou']) : ['lembrete','mudanca','livre'];
+    return `<div class="pessoa ${tardio?'tardio':''}">
+      <div class="av">${iniciais(al.nome)}</div>
+      <div class="nm"><b>${esc(al.nome)}</b><span><span class="plano ${al.plano}">${PLANOS[al.plano]}</span>${tardio ? ' · cancelou em cima da hora' : ''}</span></div>
+      ${presToggle}
+      <button class="wa ${presToggle?'ic':''}" aria-label="WhatsApp" onclick='menuWa(${attr(ctx)}, ${attr(chaves)})'>${WA_ICON}<span class="t">WhatsApp</span></button>
+    </div>`;
+  }).join('');
+  let acoes = '';
+  if (!a.cancelada){
+    if (conferindo && a.ocupadas > 0 && !a.fechada) acoes += `<button class="pri" onclick="fecharAula(${a.aula_id})">Confirmar presenças</button>`;
+    if (a.alunos.some(x => x.status !== 'cancelada_tarde')) acoes += `<button onclick="copiaTurma(${a.aula_id})">Copiar lista e mensagem</button>`;
+    if (!a.terminou) acoes += `<button class="dan" onclick="pedeCancelar(${a.aula_id})">Cancelar aula</button>`;
+  } else {
+    acoes += `<button onclick="reabrir(${a.aula_id})">Reabrir aula</button>`;
+  }
+  const dica = conferindo && !a.fechada && a.ocupadas > 0
+    ? `<div class="note" style="margin:10px 0 0">Todos já estão marcados como presentes. Toque em <b>Faltou</b> só em quem não veio e depois confirme.</div>` : '';
+  return `<div class="aula" style="--c:${a.cor}">
+    <button class="aula-head" onclick="toggleAula(${a.aula_id})" aria-expanded="${aberta}">
+      <div class="hr">${a.hora_inicio}<small>até ${a.hora_fim}</small></div>
+      <div><div class="mod">${esc(a.modalidade)}</div>${statusAula(a) || `<div class="meter">${meter}</div>`}</div>
+      <div class="ocup"><b class="${cheia?'full':''}">${a.ocupadas}/${a.vagas}</b><small>${a.cancelada ? esc(a.motivo_cancelamento||'') : cheia ? 'LOTADA' : (a.vagas-a.ocupadas)+' livre'+(a.vagas-a.ocupadas===1?'':'s')}</small></div>
+    </button>
+    ${aberta ? `<div class="aula-body">${pessoas || '<div class="vazio">Ninguém reservou ainda.</div>'}${dica}<div class="aula-actions">${acoes}</div></div>` : ''}
+  </div>`;
+}
+function toggleAula(id){ S.abertas.has(id) ? S.abertas.delete(id) : S.abertas.add(id); renderPainel(); }
+
+async function presenca(reserva, status){
+  // atualização otimista
+  for (const a of S.painel.aulas) for (const al of a.alunos) if (al.reserva_id === reserva) al.status = status;
+  renderPainel();
+  try{ await adm('admin_marcar_presenca', { p_reserva_id:reserva, p_status:status }); }
+  catch(e){ toast(e.message); carregaPainel(true); }
+}
+async function fecharAula(id){
+  try{ const r = await adm('admin_fechar_aula', { p_aula_id:id }); toast('Presenças confirmadas ✓'); S.abertas.delete(id); await carregaPainel(true); }
+  catch(e){ toast(e.message); }
+}
+function copiaTurma(id){
+  const a = S.painel.aulas.find(x => x.aula_id === id);
+  const nomes = a.alunos.filter(x => x.status !== 'cancelada_tarde').map((x,i) => `${i+1}. ${x.nome}`).join('\n');
+  const texto = `${a.modalidade} · ${rotuloDia(S.painel.dia)} ${dataCurta(S.painel.dia)} às ${a.hora_inicio}\n${nomes}`;
+  const aviso = `Pessoal da turma de ${a.modalidade} ${quando(S.painel.dia)} às ${a.hora_inicio}: `;
+  sheet(`<h3 class="h-display">Lista da turma</h3>
+    <p class="sub">Para colar no grupo ou numa lista de transmissão.</p>
+    <div class="field"><label>Lista de presença</label><textarea class="inp" id="cp-lista" style="min-height:140px">${esc(texto)}</textarea></div>
+    <div class="field"><label>Aviso para a turma (edite e copie)</label><textarea class="inp" id="cp-aviso">${esc(aviso)}</textarea></div>
+    <div class="stack"><button class="btn btn-neon" onclick="copiar('cp-lista')">Copiar lista</button><button class="btn btn-dark" onclick="copiar('cp-aviso')">Copiar aviso</button></div>`);
+}
+async function copiar(id){
+  const t = $(id).value;
+  try{ await navigator.clipboard.writeText(t); toast('Copiado ✓'); }
+  catch(e){ $(id).select(); try{ document.execCommand('copy'); toast('Copiado ✓'); }catch(e2){ toast('Selecione o texto e copie'); } }
+}
+function pedeCancelar(id){
+  const a = S.painel.aulas.find(x => x.aula_id === id);
+  sheet(`<h3 class="h-display">Cancelar aula?</h3>
+    <div class="kv"><div><span>Aula</span><b>${esc(a.modalidade)}</b></div><div><span>Quando</span><b>${rotuloDia(S.painel.dia)}, ${a.hora_inicio}</b></div><div><span>Reservas</span><b>${a.ocupadas}</b></div></div>
+    <div class="field"><label>Motivo (aparece para os alunos)</label><input class="inp" id="cn-motivo" placeholder="Ex.: Feriado"></div>
+    ${a.ocupadas ? `<div class="note warn">As ${a.ocupadas} reservas serão canceladas. Na próxima tela você avisa cada aluno pelo WhatsApp.</div>` : ''}
+    <div class="stack"><button class="btn btn-red" id="cn-btn" onclick="cancelaAula(${id})">Cancelar aula</button><button class="btn btn-dark" onclick="fecha()">Voltar</button></div>`);
+}
+async function cancelaAula(id){
+  const motivo = $('cn-motivo').value.trim() || 'Aula cancelada';
+  $('cn-btn').disabled = true;
+  try{
+    const r = await adm('admin_cancelar_aula', { p_aula_id:id, p_motivo:motivo });
+    await carregaPainel(true);
+    if (r.alunos_afetados.length){
+      const txt = n => `Oi, ${primeiro(n)}! A aula de ${r.modalidade} ${quando(r.data)} às ${r.hora_inicio} foi cancelada (${motivo}). Sua reserva foi liberada. Pode reservar outro horário pelo app. Desculpe o transtorno! 💚`;
+      sheet(`<h3 class="h-display">Avise os alunos</h3><p class="sub">Toque em cada nome para abrir a mensagem pronta no WhatsApp.</p>
+        <div class="list-card" style="margin-bottom:12px">${r.alunos_afetados.map(x => `<div class="row"><div class="av">${iniciais(x.nome)}</div><div class="nm"><b>${esc(x.nome)}</b><span>${fmtWhats(x.whatsapp)}</span></div>
+        <button class="wa" onclick="this.style.opacity=.45; abrirWa('${x.whatsapp}', ${attr(txt(x.nome))})">${WA_ICON}<span class="t">Avisar</span></button></div>`).join('')}</div>
+        <button class="btn btn-dark" onclick="fecha()">Concluir</button>`);
+    } else { fecha(); toast('Aula cancelada'); }
+  }catch(e){ fecha(); toast(e.message); }
+}
+async function reabrir(id){ try{ await adm('admin_reabrir_aula', { p_aula_id:id }); toast('Aula reaberta'); carregaPainel(true); }catch(e){ toast(e.message); } }
+
+/* ---- cadastros pendentes ---- */
+function renderPendentes(){
+  const l = S.painel.pendentes;
+  $('s-pendentes').innerHTML = `<div class="sec-h"><h3 class="h-display">📝 Cadastros pendentes</h3><small>${l.length}</small></div>` +
+    (l.length ? `<div class="list-card">${l.map(p => `<div class="row">
+      <div class="av">${iniciais(p.nome)}</div>
+      <div class="nm"><b>${esc(p.nome)}</b><span><span class="plano ${p.plano}">${PLANOS[p.plano]}</span> · ${p.genero === 'F' ? 'Feminino' : 'Masculino'} · ${haQuanto(p.criado_em)}</span></div>
+      <button class="mini" onclick="verPendente('${p.aluno_id}')">Ver</button>
+      <button class="mini neon" onclick="aprovar('${p.aluno_id}', true)">Aprovar</button></div>`).join('')}</div>`
+    : `<div class="empty">Nenhum cadastro aguardando aprovação.</div>`);
+}
+function verPendente(id){
+  const p = S.painel.pendentes.find(x => x.aluno_id === id);
+  const idade = Math.floor((new Date() - parseD(p.data_nascimento)) / 31557600000);
+  sheet(`<h3 class="h-display">${esc(p.nome)}</h3><p class="sub">Confira os dados antes de liberar o acesso.</p>
+    <div class="kv"><div><span>WhatsApp</span><b>${fmtWhats(p.whatsapp)}</b></div><div><span>Plano</span><b>${PLANOS[p.plano]}</b></div>
+    <div><span>Gênero</span><b>${p.genero === 'F' ? 'Feminino' : 'Masculino'}</b></div><div><span>Nascimento</span><b>${dataCurta(p.data_nascimento)}/${p.data_nascimento.slice(0,4)} (${idade} anos)</b></div>
+    <div><span>Cadastrado</span><b>${haQuanto(p.criado_em)}</b></div></div>
+    <div class="stack"><button class="btn btn-neon" onclick="aprovar('${id}', true)">Aprovar cadastro</button>
+    <button class="btn btn-wa" onclick='abrirWa("${p.whatsapp}", ${attr(`Oi, ${primeiro(p.nome)}! Aqui é do Instituto Performance Total. Recebemos seu cadastro no app de agendamento.`)})'>Falar no WhatsApp</button>
+    <button class="btn btn-dark" style="color:var(--red)" onclick="aprovar('${id}', false)">Recusar</button></div>`);
+}
+async function aprovar(id, sim){
+  const p = S.painel.pendentes.find(x => x.aluno_id === id);
+  try{
+    await adm('admin_aprovar', { p_aluno_id:id, p_aprovar:sim });
+    await carregaPainel(true);
+    if (sim){
+      sheet(`<div style="text-align:center;font-size:44px;margin:6px 0 8px">✅</div><h3 class="h-display" style="text-align:center">Cadastro aprovado</h3>
+        <p class="sub" style="text-align:center">Quer avisar ${esc(primeiro(p.nome))} que já pode reservar?</p>
+        <div class="stack"><button class="btn btn-wa" onclick='abrirWa("${p.whatsapp}", ${attr(`Oi, ${primeiro(p.nome)}! Seu cadastro no app do Instituto Performance Total foi aprovado ✅ Já pode reservar suas aulas. Te esperamos! 💪`)}); fecha()'>Avisar no WhatsApp</button>
+        <button class="btn btn-dark" onclick="fecha()">Agora não</button></div>`);
+    } else { fecha(); toast('Cadastro recusado'); }
+  }catch(e){ toast(e.message); }
+}
+
+/* ---- aniversários ---- */
+function renderAniv(){
+  const l = S.painel.aniversariantes;
+  $('s-aniv').innerHTML = `<div class="sec-h"><h3 class="h-display">🎂 Aniversários</h3><small>próximos 7 dias</small></div>` +
+    (l.length ? `<div class="list-card">${l.map(a => `<div class="row">
+      <div class="av" style="${a.eh_hoje?'background:var(--neon);color:#000':''}">${a.eh_hoje ? '🎉' : iniciais(a.nome)}</div>
+      <div class="nm"><b>${esc(a.nome)}</b><span>${a.eh_hoje ? '<b style="color:var(--neon);display:inline">Hoje!</b>' : DIAS_LONGO[parseD(a.data).getDay()] + ', ' + dataCurta(a.data)} · faz ${a.idade} anos</span></div>
+      <button class="wa" onclick='abrirWa("${a.whatsapp}", ${attr(preencher(msgModelo('aniversario'), {nome:a.nome}))})'>${WA_ICON}<span class="t">Parabéns</span></button></div>`).join('')}</div>`
+    : `<div class="empty">Nenhum aniversário nos próximos 7 dias.</div>`);
+}
+
+/* ---- sumidos ---- */
+function renderSumidos(){
+  const l = S.painel.sumidos, c = S.painel.config;
+  $('s-sumidos').innerHTML = `<div class="sec-h"><h3 class="h-display">🔴 Alunos sumidos</h3><small>sem treinar há ${c.dias_atencao}+ dias e sem reserva</small></div>` +
+    (l.length ? `<div class="list-card">${l.map(s => `<div class="row" style="${s.contatado_recentemente?'opacity:.6':''}">
+      <div class="av">${iniciais(s.nome)}</div>
+      <div class="nm"><b>${esc(s.nome)}</b><span><span class="lvl ${s.nivel}">${s.nivel === 'risco' ? 'Em risco' : 'Atenção'}</span> ${s.ultima_presenca ? `${s.dias} dias sem treinar` : 'nunca treinou'}
+        ${s.contatado_recentemente ? ` · <span class="ok-tag">✓ contatado ${haQuanto(s.ultimo_contato_em)}</span>` : ''}</span></div>
+      <button class="wa" onclick='chamarSumido(${attr(s)})'>${WA_ICON}<span class="t">Chamar</span></button></div>`).join('')}</div>`
+    : `<div class="empty">Ninguém sumido. Turma firme! 💪</div>`);
+}
+function chamarSumido(s){
+  S.ctxWa = { nome:s.nome, whatsapp:s.whatsapp, depois: async () => {
+    try{ await adm('admin_marcar_contato', { p_aluno_id:s.aluno_id }); toast(`Marcado: ${primeiro(s.nome)} contatado hoje`); carregaPainel(true); }catch(e){ toast(e.message); }
+  }};
+  sheet(`<h3 class="h-display">Chamar ${esc(primeiro(s.nome))}</h3>
+    <p class="sub">${s.ultima_presenca ? `Último treino: ${dataCurta(s.ultima_presenca)} (${s.dias} dias)` : 'Ainda não treinou desde o cadastro'} · ${PLANOS[s.plano]}</p>
+    <div class="field"><label>Mensagem</label><textarea class="inp" id="wa-txt">${esc(preencher(msgModelo('sumido'), s))}</textarea></div>
+    <div class="note">Ao enviar, o app marca "contatado hoje" para ninguém da equipe mandar mensagem duas vezes.</div>
+    <div class="stack"><button class="btn btn-wa" onclick="enviaWa()">Abrir no WhatsApp</button><button class="btn btn-dark" onclick="fecha()">Cancelar</button></div>`);
+}
+
+/* ---- parceiros abaixo da meta ---- */
+function renderParceiros(){
+  const l = S.painel.parceiros_ritmo, meta = S.painel.config.meta_mensal_parceiros;
+  $('s-parceiros').innerHTML = `<div class="sec-h"><h3 class="h-display">📉 Wellhub / TotalPass</h3><small>abaixo do ritmo de ${meta} aulas no mês</small></div>` +
+    (l.length ? `<div class="list-card">${l.map(p => {
+      const a = Math.min(100, p.treinos / meta * 100), b = Math.min(100 - a, p.agendadas / meta * 100);
+      return `<div class="row">
+      <div class="nm"><b>${esc(p.nome)} <span class="plano ${p.plano}">${PLANOS[p.plano]}</span></b>
+        <span>${p.treinos} treino${p.treinos===1?'':'s'}${p.agendadas ? ` + ${p.agendadas} agendada${p.agendadas===1?'':'s'}` : ''} de ${meta} · ${p.dias_restantes} dias até o fim do mês</span>
+        <div class="prog" title="${p.treinos} feitos, ${p.agendadas} agendados, meta ${meta}"><i class="a" style="width:${a}%"></i><i class="b" style="width:${b}%"></i></div></div>
+      <button class="wa" onclick='abrirWa("${p.whatsapp}", ${attr(preencher(msgModelo('parceiro_ritmo'), p))})'>${WA_ICON}<span class="t">Incentivar</span></button></div>`; }).join('')}</div>
+      <div class="legend-note">■ <span style="color:var(--neon)">treinos feitos</span> · ■ <span style="color:#7d9a2a">já agendados</span>. Conta as presenças registradas aqui, não os check-ins do app parceiro.</div>`
+    : `<div class="empty">Todos os alunos Wellhub/TotalPass estão no ritmo. 🔥</div>`);
+}
+
+/* ---- avisos ---- */
+function renderAvisos(avisos){
+  $('s-avisos').innerHTML = `<div class="sec-h"><h3 class="h-display">🔔 Avisos</h3>${avisos.length ? `<button class="mini" onclick="lerAvisos()">Marcar como lidos</button>` : ''}</div>` +
+    (avisos.length ? `<div class="list-card">${avisos.map(a => `<div class="aviso"><span>${a.tipo === 'falta' ? '❌' : '⏰'}</span>
+      <div style="flex:1">${esc(a.mensagem)}<time>${haQuanto(a.criado_em)}</time></div>
+      ${a.whatsapp ? `<button class="wa" onclick='abrirWa("${a.whatsapp}", ${attr(`Oi, ${primeiro(a.nome)}! `)})'>${WA_ICON}</button>` : ''}</div>`).join('')}</div>`
+    : `<div class="empty">Sem avisos novos.</div>`);
+}
+async function lerAvisos(){
+  const ids = S.painel.avisos.filter(a => a.tipo !== 'novo_cadastro').map(a => a.id);
+  try{ await adm('admin_ler_avisos', { p_ids:ids }); carregaPainel(true); }catch(e){ toast(e.message); }
+}
+
+/* ================= ALUNOS ================= */
+async function carregaAlunos(){
+  try{ S.alunos = await adm('admin_alunos'); renderAlunos(); }
+  catch(e){ $('a-lista').innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+const FILTROS = [['todos','Todos'],['mensalista','Mensalistas'],['wellhub','Wellhub'],['totalpass','TotalPass'],['inativo','Inativos']];
+function setFiltro(f){ S.filtro = f; renderAlunos(); }
+function renderAlunos(){
+  if (!S.alunos) return;
+  const q = $('a-busca').value.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const base = S.alunos.filter(a => a.status !== 'pendente' && a.status !== 'recusado');
+  const conta = f => f === 'todos' ? base.filter(a => a.status === 'ativo').length : f === 'inativo' ? base.filter(a => a.status === 'inativo').length : base.filter(a => a.status === 'ativo' && a.plano === f).length;
+  $('a-filtros').innerHTML = FILTROS.map(([f,l]) => `<button class="chip ${S.filtro===f?'on':''}" onclick="setFiltro('${f}')">${l} · ${conta(f)}</button>`).join('');
+  let l = base.filter(a => S.filtro === 'inativo' ? a.status === 'inativo' : a.status === 'ativo' && (S.filtro === 'todos' || a.plano === S.filtro));
+  if (q) l = l.filter(a => (a.nome.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'') + ' ' + a.whatsapp).includes(q.replace(/\D/g,'') || q));
+  $('a-count').textContent = `${base.filter(a => a.status === 'ativo').length} ativos`;
+  $('a-lista').innerHTML = l.length ? l.map(a => `<button class="aluno" onclick="verAluno('${a.aluno_id}')">
+    <div class="av">${iniciais(a.nome)}</div>
+    <div class="nm"><b>${esc(a.nome)}</b><div class="meta"><span class="plano ${a.plano}">${PLANOS[a.plano]}</span>
+      <span>💪 ${a.treinos_mes} no mês</span>${a.faltas_90d ? `<span style="color:var(--red)">${a.faltas_90d} falta${a.faltas_90d>1?'s':''}</span>` : ''}
+      <span>${a.ultima_presenca ? 'último treino ' + dataCurta(a.ultima_presenca) : 'sem treinos'}</span></div></div>
+    <span style="color:var(--muted);font-size:20px">›</span></button>`).join('') : `<div class="empty">Nenhum aluno encontrado.</div>`;
+}
+function verAluno(id){
+  const a = S.alunos.find(x => x.aluno_id === id);
+  const parc = a.plano !== 'mensalista';
+  sheet(`<h3 class="h-display">${esc(a.nome)}</h3><p class="sub">${fmtWhats(a.whatsapp)} · nascimento ${dataCurta(a.data_nascimento)}</p>
+    <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
+      <div class="kpi"><div class="n">${a.treinos_mes}</div><div class="l">treinos no mês</div></div>
+      <div class="kpi"><div class="n" style="${a.faltas_90d?'color:var(--red)':''}">${a.faltas_90d}</div><div class="l">faltas (90 dias)</div></div>
+      <div class="kpi"><div class="n" style="${a.cancel_tarde_90d?'color:var(--warn)':''}">${a.cancel_tarde_90d}</div><div class="l">cancel. em cima da hora</div></div>
+    </div>
+    <div class="field"><label>Plano</label><select class="inp" id="ed-plano" onchange="document.getElementById('ed-lim-box').classList.toggle('hidden', this.value==='mensalista')">
+      ${Object.entries(PLANOS).map(([k,v]) => `<option value="${k}" ${a.plano===k?'selected':''}>${v}</option>`).join('')}</select></div>
+    <div class="field ${parc?'':'hidden'}" id="ed-lim-box"><label>Limite de aulas por semana (plano do app parceiro)</label>
+      <select class="inp" id="ed-lim"><option value="">Sem limite</option>${[1,2,3,4,5].map(n => `<option value="${n}" ${a.limite_semanal===n?'selected':''}>${n} por semana</option>`).join('')}</select></div>
+    <div class="field"><label>Observação interna</label><input class="inp" id="ed-obs" value="${esc(a.observacao||'')}" placeholder="Ex.: prefere turma da manhã"></div>
+    <div class="set-row" style="margin-bottom:12px"><label>Aluno ativo<small>Inativo não consegue reservar</small></label>
+      <label class="switch"><input type="checkbox" id="ed-ativo" ${a.status==='ativo'?'checked':''}><span></span></label></div>
+    <div class="stack"><button class="btn btn-neon" onclick="salvaAluno('${id}')">Salvar</button>
+      <button class="btn btn-wa" onclick='abrirWa("${a.whatsapp}", ${attr(`Oi, ${primeiro(a.nome)}! `)})'>Conversar no WhatsApp</button></div>`);
+}
+async function salvaAluno(id){
+  const plano = $('ed-plano').value;
+  const dados = { plano, observacao:$('ed-obs').value, status: $('ed-ativo').checked ? 'ativo' : 'inativo',
+    limite_semanal: plano === 'mensalista' || !$('ed-lim').value ? null : Number($('ed-lim').value) };
+  try{ await adm('admin_atualizar_aluno', { p_aluno_id:id, p_dados:dados }); fecha(); toast('Aluno atualizado ✓'); carregaAlunos(); }
+  catch(e){ toast(e.message); }
+}
+
+/* ================= INDICADORES ================= */
+$('i-periodo').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  S.periodo = Number(b.dataset.d);
+  $('i-periodo').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  carregaInd();
+});
+async function carregaInd(){
+  try{ S.ind = await adm('admin_indicadores', { p_dias:S.periodo }); renderInd(); }
+  catch(e){ $('i-corpo').innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+function barras(linhas){
+  const max = Math.max(1, ...linhas.map(l => l.valor));
+  return linhas.map(l => `<div class="bar-row" title="${esc(l.titulo)}"><div class="lb">${l.rotulo}</div>
+    <div class="bar-track"><div class="bar-fill" style="width:${l.valor/max*100}%;${l.cor?`background:${l.cor}`:''}"></div></div>
+    <div class="v">${l.texto}</div></div>`).join('');
+}
+function renderInd(){
+  const d = S.ind;
+  const taxaFalta = d.presencas + d.faltas ? Math.round(d.faltas / (d.presencas + d.faltas) * 100) : 0;
+  const ph = [...d.por_horario];
+  const cheios = ph.slice(0, 6), vazios = ph.slice(-5).reverse();
+  const cores = { 'Funcional':'#C6FF00', 'Funcional Feminino':'#FF6FB5', 'Crossfat':'#00E0FF' };
+  const lh = h => ({ rotulo:`${DIA_ISO[h.dia_semana]} ${h.hora_inicio}<small>${esc(h.modalidade)}</small>`, valor:h.taxa, texto:h.taxa+'%',
+    titulo:`${DIA_ISO[h.dia_semana]} ${h.hora_inicio} · ${h.modalidade}: média de ${h.ocupacao_media} de ${h.vagas} vagas em ${h.aulas} aulas` });
+  $('i-corpo').innerHTML = `
+    <div class="kpis">
+      <div class="kpi"><div class="n" style="color:var(--neon)">${d.presencas}</div><div class="l">presenças em ${d.periodo_dias} dias</div></div>
+      <div class="kpi"><div class="n">${d.alunos_ativos}</div><div class="l">alunos ativos</div></div>
+      <div class="kpi"><div class="n">${taxaFalta}%</div><div class="l">taxa de faltas (${d.faltas})</div></div>
+      <div class="kpi"><div class="n">${d.cancelamentos_tardios}</div><div class="l">cancelamentos em cima da hora</div></div>
+    </div>
+    <div class="sec"><div class="sec-h"><h3 class="h-display">Horários mais cheios</h3><small>ocupação média</small></div>
+      <div class="bars">${cheios.length ? barras(cheios.map(lh)) : '<div class="vazio">Sem dados no período.</div>'}</div></div>
+    <div class="sec"><div class="sec-h"><h3 class="h-display">Horários com mais vagas</h3><small>oportunidade de divulgação</small></div>
+      <div class="bars">${vazios.length ? barras(vazios.map(lh)) : '<div class="vazio">Sem dados no período.</div>'}</div></div>
+    <div class="two">
+      <div class="sec"><div class="sec-h"><h3 class="h-display">Por modalidade</h3><small>presenças</small></div>
+        <div class="bars">${barras(d.por_modalidade.map(m => ({ rotulo:esc(m.modalidade), valor:m.presencas, texto:m.presencas, cor:cores[m.modalidade], titulo:`${m.modalidade}: ${m.presencas} presenças` })))}</div></div>
+      <div class="sec"><div class="sec-h"><h3 class="h-display">Alunos por plano</h3><small>ativos</small></div>
+        <div class="bars">${barras(d.por_plano.map(p => ({ rotulo:PLANOS[p.plano], valor:p.alunos, texto:p.alunos, titulo:`${PLANOS[p.plano]}: ${p.alunos} alunos` })))}</div></div>
+    </div>`;
+}
+
+/* ================= AJUSTES ================= */
+async function carregaAjustes(){
+  try{
+    const [cfg, grade] = await Promise.all([adm('admin_config'), adm('admin_grade')]);
+    S.cfg = cfg; S.grade = grade; renderAjustes();
+  }catch(e){ $('c-corpo').innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+const REGRAS = [
+  ['limite_semanal_mensalista','Aulas por semana (mensalista)',''],
+  ['meta_mensal_parceiros','Meta mensal Wellhub/TotalPass','aulas por mês'],
+  ['antecedencia_dias','Reservas abrem com antecedência de','dias'],
+  ['min_horas_reserva','Reservas fecham antes da aula','horas'],
+  ['horas_cancelamento','Cancelamento sem aviso até','horas antes'],
+  ['dias_atencao','Aluno "atenção" após','dias sem treinar'],
+  ['dias_risco','Aluno "em risco" após','dias sem treinar'],
+];
+function renderAjustes(){
+  const c = S.cfg, g = S.grade;
+  const porDia = [1,2,3,4].map(d => g.filter(x => x.dia_semana === d));
+  $('c-corpo').innerHTML = `
+    <div class="sec"><div class="sec-h"><h3 class="h-display">Vagas por aula</h3><small>vale para as próximas aulas</small></div>
+      <div class="set-card">${porDia.map((l,i) => `<div class="grade-day">${DIAS_LONGO[i+1]}</div>` + l.map(x => `
+        <div class="set-row"><label><span style="color:${x.cor}">●</span> ${x.hora_inicio} · ${esc(x.modalidade)}</label>
+          <div style="display:flex;gap:12px;align-items:center">
+            <div class="stepper"><button onclick="vaga(${x.grade_id},-1)">−</button><b id="gv-${x.grade_id}">${x.vagas}</b><button onclick="vaga(${x.grade_id},1)">+</button></div>
+            <label class="switch" title="Aula ativa"><input type="checkbox" ${x.ativo?'checked':''} onchange="ativaGrade(${x.grade_id}, this.checked)"><span></span></label>
+          </div></div>`).join('')).join('')}</div></div>
+    <div class="sec"><div class="sec-h"><h3 class="h-display">Regras</h3></div>
+      <div class="set-card">${REGRAS.map(([k,l,s]) => `<div class="set-row"><label>${l}${s?`<small>${s}</small>`:''}</label><input class="inp num" type="number" min="0" id="rg-${k}" value="${c[k]}"></div>`).join('')}</div>
+      <button class="btn btn-neon" onclick="salvaRegras()">Salvar regras</button></div>
+    <div class="sec"><div class="sec-h"><h3 class="h-display">Mensagens prontas</h3><small>{nome} {modalidade} {quando} {horario} {treinos}</small></div>
+      <div class="set-card">${c.mensagens.map(m => `<div class="field"><label>${esc(m.titulo)}</label><textarea class="inp" data-chave="${m.chave}">${esc(m.texto)}</textarea></div>`).join('')}
+      <button class="btn btn-neon" onclick="salvaMensagens()">Salvar mensagens</button></div></div>
+    <div class="sec"><div class="sec-h"><h3 class="h-display">Senha do painel</h3></div>
+      <div class="set-card"><div class="field"><label>Nova senha</label><input class="inp" type="password" id="nova-senha" placeholder="mínimo 6 caracteres"></div>
+      <button class="btn btn-dark" onclick="trocaSenha()">Trocar senha</button></div></div>`;
+}
+let vagaTimers = {};
+function vaga(id, d){
+  const x = S.grade.find(g => g.grade_id === id);
+  x.vagas = Math.max(1, Math.min(30, x.vagas + d)); $('gv-'+id).textContent = x.vagas;
+  clearTimeout(vagaTimers[id]);
+  vagaTimers[id] = setTimeout(async () => {
+    try{ await adm('admin_atualizar_grade', { p_grade_id:id, p_vagas:x.vagas, p_ativo:null }); toast(`${x.hora_inicio} ${x.modalidade}: ${x.vagas} vagas`); }catch(e){ toast(e.message); }
+  }, 600);
+}
+async function ativaGrade(id, on){
+  try{ await adm('admin_atualizar_grade', { p_grade_id:id, p_vagas:null, p_ativo:on }); toast(on ? 'Horário ativado' : 'Horário desativado (novas datas não serão abertas)'); }catch(e){ toast(e.message); }
+}
+async function salvaRegras(){
+  const cfg = {}; for (const [k] of REGRAS){ const v = Number($('rg-'+k).value); if (!(v >= 0)) return toast('Confira os números.'); cfg[k] = v; }
+  if (cfg.dias_risco <= cfg.dias_atencao) return toast('"Em risco" precisa ser maior que "atenção".');
+  try{ await adm('admin_salvar_config', { p_config:cfg }); toast('Regras salvas ✓'); }catch(e){ toast(e.message); }
+}
+async function salvaMensagens(){
+  const msgs = [...document.querySelectorAll('textarea[data-chave]')].map(t => ({ chave:t.dataset.chave, texto:t.value }));
+  try{ await adm('admin_salvar_config', { p_config:{}, p_mensagens:msgs }); toast('Mensagens salvas ✓'); if (S.painel) S.painel.mensagens = msgs.map(m => ({ ...m, titulo:(S.cfg.mensagens.find(x => x.chave===m.chave)||{}).titulo })); }
+  catch(e){ toast(e.message); }
+}
+async function trocaSenha(){
+  const n = $('nova-senha').value;
+  if (n.length < 6) return toast('Use pelo menos 6 caracteres.');
+  try{ await adm('admin_salvar_config', { p_config:{ nova_senha:n } }); S.senha = n; lsSet(KS, n); $('nova-senha').value = ''; toast('Senha alterada ✓'); }
+  catch(e){ toast(e.message); }
+}
+
+boot();
+</script>
+</body>
+</html>
