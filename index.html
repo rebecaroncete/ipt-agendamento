@@ -38,7 +38,7 @@ input,select{font-family:inherit}
 .h-display{font-family:Anton,sans-serif;text-transform:uppercase;letter-spacing:.5px;line-height:1;margin:0}
 
 /* ---------- topo ---------- */
-.top{position:sticky;top:0;z-index:20;background:linear-gradient(var(--bg) 75%,transparent);padding:14px 0 10px}
+.top{position:sticky;top:0;z-index:20;background:linear-gradient(var(--bg) 75%,transparent);padding:calc(14px + env(safe-area-inset-top)) 0 10px}
 .top-row{display:flex;justify-content:space-between;align-items:center}
 .icon-btn{background:var(--card);border:1px solid var(--line);color:var(--txt);width:40px;height:40px;border-radius:12px;font-size:18px}
 .hello{margin:14px 0 2px;font-size:26px}
@@ -48,7 +48,7 @@ input,select{font-family:inherit}
 .chip.neon{background:var(--neon);color:var(--neon-ink);border-color:var(--neon)}
 
 /* ---------- boas-vindas / forms ---------- */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;padding:28px 16px 32px}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;padding:calc(28px + env(safe-area-inset-top)) 16px 32px}
 .hero h1{font-size:54px;margin:28px 0 10px}
 .hero h1 em{font-style:normal;color:var(--neon)}
 .hero p{color:var(--muted);font-size:16px;line-height:1.5;margin:0}
@@ -66,7 +66,7 @@ input,select{font-family:inherit}
 .demo-box small{color:var(--muted);display:block;margin-bottom:8px;font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:.6px}
 .demo-box button{background:none;border:0;color:var(--neon);font-weight:700;padding:6px 0;text-align:left;font-size:14px;display:block}
 
-.form-page{padding:18px 16px 40px}
+.form-page{padding:calc(18px + env(safe-area-inset-top)) 16px 40px}
 .back{background:none;border:0;color:var(--muted);font-weight:700;padding:6px 0;font-size:14px}
 .form-page h2{font-size:34px;margin:12px 0 6px}
 .form-page .sub{color:var(--muted);margin:0 0 22px;line-height:1.5}
@@ -84,7 +84,7 @@ input[type=date]{color-scheme:dark}
 .link{background:none;border:0;color:var(--neon);font-weight:700;padding:0;font-size:inherit;text-decoration:underline}
 .err{color:var(--red);font-weight:600;font-size:14px;min-height:20px;margin:-6px 0 12px}
 
-.center-page{min-height:100vh;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:30px 16px}
+.center-page{min-height:100vh;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:calc(30px + env(safe-area-inset-top)) 16px 30px}
 .big-ico{width:92px;height:92px;border-radius:50%;margin:0 auto 22px;display:grid;place-items:center;font-size:42px;background:rgba(198,255,0,.12);border:2px solid var(--neon)}
 .center-page h2{font-size:34px;margin:0 0 10px}
 .center-page p{color:var(--muted);line-height:1.55;margin:0 0 26px}
@@ -187,7 +187,7 @@ input[type=date]{color-scheme:dark}
 @keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
 @keyframes fade{from{opacity:0}}
 .vagas .t{white-space:nowrap}
-.sair{background:var(--card);border:1px solid var(--line);color:var(--muted);height:36px;padding:0 14px;border-radius:12px;font-weight:700;font-size:13px}
+.sair{background:var(--card);border:1px solid var(--line);color:var(--muted);height:40px;min-width:56px;padding:0 14px;border-radius:12px;font-weight:700;font-size:13px}
 @media (max-width:370px){
   .aula{grid-template-columns:50px minmax(0,1fr) auto;gap:10px;padding:12px}
   .aula .hr{font-size:19px}
