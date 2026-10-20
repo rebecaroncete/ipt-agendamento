@@ -396,12 +396,14 @@ async function boot(){
   }catch(e){
     lsSet(TK, null); S.token = null; go('v-welcome'); return;
   }
-  if (S.perfil.status === 'pendente'){ $('p-nome').textContent = S.perfil.primeiro_nome; go('v-pendente'); return; }
   if (S.perfil.status !== 'ativo'){
-    go('v-pendente');
-    $('p-nome').textContent = S.perfil.primeiro_nome;
-    document.querySelector('#v-pendente p').innerHTML = 'Seu cadastro não está ativo no momento. Fale com o Instituto para reativar.';
-    return;
+    const pend = S.perfil.status === 'pendente';
+    document.querySelector('#v-pendente .big-ico').textContent = pend ? '⏳' : '⏸';
+    document.querySelector('#v-pendente h2').textContent = pend ? 'Cadastro enviado!' : 'Cadastro inativo';
+    document.querySelector('#v-pendente p').innerHTML = pend
+      ? `Oi, <b>${esc(S.perfil.primeiro_nome)}</b>! Agora é só aguardar a aprovação do Instituto. Assim que liberarem, você já pode reservar suas aulas por aqui.`
+      : `Oi, <b>${esc(S.perfil.primeiro_nome)}</b>! Seu cadastro está inativo no momento. Fale com o Instituto para reativar.`;
+    go('v-pendente'); return;
   }
   go('v-app');
   renderHeader();
