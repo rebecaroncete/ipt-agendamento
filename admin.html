@@ -635,7 +635,8 @@ function verPendente(id){
     <div><span>Cadastrado</span><b>${haQuanto(p.criado_em)}</b></div></div>
     <div class="stack"><button class="btn btn-neon" onclick="aprovar('${id}', true)">Aprovar cadastro</button>
     <button class="btn btn-wa" onclick='abrirWa("${p.whatsapp}", ${attr(`Oi, ${primeiro(p.nome)}! Aqui é do Instituto Performance Total. Recebemos seu cadastro no app de agendamento.`)})'>Falar no WhatsApp</button>
-    <button class="btn btn-dark" style="color:var(--red)" onclick="aprovar('${id}', false)">Recusar</button></div>`);
+    <button class="btn btn-dark" style="color:var(--red)" onclick="aprovar('${id}', false)">Recusar</button>
+    <button class="btn btn-dark" style="color:var(--red)" onclick='pedeExcluir("${id}", ${attr(p.nome)})'>Excluir cadastro</button></div>`);
 }
 async function aprovar(id, sim){
   const p = S.painel.pendentes.find(x => x.aluno_id === id);
@@ -722,7 +723,7 @@ function setFiltro(f){ S.filtro = f; renderAlunos(); }
 function renderAlunos(){
   if (!S.alunos) return;
   const q = $('a-busca').value.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-  const base = S.alunos.filter(a => a.status !== 'pendente' && a.status !== 'recusado');
+  const base = S.alunos.filter(a => !['pendente','recusado','excluido'].includes(a.status));
   const conta = f => f === 'todos' ? base.filter(a => a.status === 'ativo').length : f === 'inativo' ? base.filter(a => a.status === 'inativo').length : base.filter(a => a.status === 'ativo' && a.plano === f).length;
   $('a-filtros').innerHTML = FILTROS.map(([f,l]) => `<button class="chip ${S.filtro===f?'on':''}" onclick="setFiltro('${f}')">${l} · ${conta(f)}</button>`).join('');
   let l = base.filter(a => S.filtro === 'inativo' ? a.status === 'inativo' : a.status === 'ativo' && (S.filtro === 'todos' || a.plano === S.filtro));
@@ -752,7 +753,8 @@ function verAluno(id){
     <div class="set-row" style="margin-bottom:12px"><label>Aluno ativo<small>Inativo não consegue reservar</small></label>
       <label class="switch"><input type="checkbox" id="ed-ativo" ${a.status==='ativo'?'checked':''}><span></span></label></div>
     <div class="stack"><button class="btn btn-neon" onclick="salvaAluno('${id}')">Salvar</button>
-      <button class="btn btn-wa" onclick='abrirWa("${a.whatsapp}", ${attr(`Oi, ${primeiro(a.nome)}! `)})'>Conversar no WhatsApp</button></div>`);
+      <button class="btn btn-wa" onclick='abrirWa("${a.whatsapp}", ${attr(`Oi, ${primeiro(a.nome)}! `)})'>Conversar no WhatsApp</button>
+      <button class="btn btn-dark" style="color:var(--red)" onclick='pedeExcluir("${id}", ${attr(a.nome)})'>Excluir aluno</button></div>`);
 }
 async function salvaAluno(id){
   const plano = $('ed-plano').value;
@@ -760,6 +762,23 @@ async function salvaAluno(id){
     limite_semanal: plano === 'mensalista' || !$('ed-lim').value ? null : Number($('ed-lim').value) };
   try{ await adm('admin_atualizar_aluno', { p_aluno_id:id, p_dados:dados }); fecha(); toast('Aluno atualizado ✓'); carregaAlunos(); }
   catch(e){ toast(e.message); }
+}
+
+function pedeExcluir(id, nome){
+  sheet(`<h3 class="h-display">Excluir aluno?</h3>
+    <p class="sub"><b>${esc(nome)}</b> será removido do app: nome, WhatsApp e data de nascimento são apagados, e as reservas futuras são canceladas. O histórico de presenças continua nos indicadores, sem identificação.</p>
+    <div class="note warn">Essa ação não pode ser desfeita. Se o aluno voltar, ele faz um cadastro novo.</div>
+    <div class="stack"><button class="btn btn-red" id="ex-btn" onclick="excluir('${id}')">Excluir aluno</button>
+    <button class="btn btn-dark" onclick="fecha()">Cancelar</button></div>`);
+}
+async function excluir(id){
+  $('ex-btn').disabled = true;
+  try{
+    const r = await adm('admin_excluir_aluno', { p_aluno_id:id });
+    fecha(); toast(r.ok ? `${primeiro(r.nome)} foi excluído(a)` : r.mensagem);
+    if (S.aba === 'alunos') carregaAlunos();
+    carregaPainel(true);
+  }catch(e){ fecha(); toast(e.message); }
 }
 
 /* ================= INDICADORES ================= */
